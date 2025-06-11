@@ -14,7 +14,7 @@ public class DireccionDuenoDAO {
     public static final String ID_CASA = "idCasa";
     public static final String CALLE = "calle";
     public static final String COLONIA = "colonia";
-    public static final String NUMERO = "numero";
+    public static final String NUMERO = "numeroDeCasa";
     public static final String ID_DUENIO = "idDuenio";
 
     public boolean insertarDireccion(DireccionDuenoDTO direccion) throws SQLException {

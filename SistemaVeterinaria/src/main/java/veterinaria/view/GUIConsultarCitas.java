@@ -45,9 +45,11 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
         textBusquedaVet = new javax.swing.JTextField();
         botonCerrar = new javax.swing.JButton();
         botonBuscar = new javax.swing.JButton();
-        jSpinner1 = new javax.swing.JSpinner();
-        jSpinner2 = new javax.swing.JSpinner();
-        jSpinner3 = new javax.swing.JSpinner();
+        spinnerDia = new javax.swing.JSpinner();
+        spinnerMes = new javax.swing.JSpinner();
+        spinnerAno = new javax.swing.JSpinner();
+        botonBuscarFecha = new javax.swing.JButton();
+        botonBuscarMes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -86,11 +88,25 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
             }
         });
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, 31, 1));
+        spinnerDia.setModel(new javax.swing.SpinnerNumberModel(1, 1, 31, 1));
 
-        jSpinner2.setModel(new javax.swing.SpinnerNumberModel(1, 1, 12, 1));
+        spinnerMes.setModel(new javax.swing.SpinnerNumberModel(1, 1, 12, 1));
 
-        jSpinner3.setModel(new javax.swing.SpinnerNumberModel(2025, 2000, 3000, 1));
+        spinnerAno.setModel(new javax.swing.SpinnerNumberModel(2025, 2000, 3000, 1));
+
+        botonBuscarFecha.setText("Fecha");
+        botonBuscarFecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonBuscarFechaActionPerformed(evt);
+            }
+        });
+
+        botonBuscarMes.setText("Mes");
+        botonBuscarMes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonBuscarMesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -103,19 +119,22 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(36, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(botonBuscarMes)
                     .addComponent(botonCerrar)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(textBusquedaVet, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(botonBuscar)
                             .addGap(18, 18, 18)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(spinnerDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(spinnerMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(spinnerAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botonBuscarFecha))))
                 .addGap(34, 34, 34))
         );
         layout.setVerticalGroup(
@@ -123,18 +142,21 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addComponent(botonBuscarMes)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textBusquedaVet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonBuscar)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(spinnerDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spinnerMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spinnerAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonBuscarFecha))
+                .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(botonCerrar)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
 
         pack();
@@ -175,8 +197,9 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
         String nombreVet = textBusquedaVet.getText().trim();
         List<ConsultarCitaDTO> consultas = new CitaDAO().obtenerCitasFiltradas();
         List<ConsultarCitaDTO> consultasBuscadas = new ArrayList<>();
+        
         for (ConsultarCitaDTO i : consultas) {
-            if (i.getNombreVeterinario().contains(nombreVet)) {
+            if (i.getNombreVeterinario().toLowerCase().contains(nombreVet.toLowerCase())) {
                 consultasBuscadas.add(i);
             }
         }
@@ -184,7 +207,7 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
         try {
-            for (ConsultarCitaDTO i : consultas) {
+            for (ConsultarCitaDTO i : consultasBuscadas) {
                 Object[] fila = new Object[6];
                 fila[0] = i.getNombreVeterinario();
                 fila[1] = i.getNombreMascota();
@@ -197,10 +220,84 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
         } catch (Exception e) {
             logger.error("Error al cargar tabla", e);
         }
-
+        
         tablaConsultas.setModel(modelo);
         
     }//GEN-LAST:event_botonBuscarActionPerformed
+
+    private void botonBuscarFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarFechaActionPerformed
+        int diaInt = (Integer) spinnerDia.getValue();
+        int mesInt = (Integer) spinnerMes.getValue();
+        int anoInt = (Integer) spinnerAno.getValue();
+        
+        String dia = diaInt < 10 ? "0" + diaInt : String.valueOf(diaInt);
+        String mes = mesInt < 10 ? "0" + mesInt : String.valueOf(mesInt);
+        String ano = String.valueOf(anoInt);
+
+        String fecha = ano + "-" + mes + "-" + dia;
+        
+        List<ConsultarCitaDTO> consultas = new CitaDAO().obtenerCitasFiltradas();
+        List<ConsultarCitaDTO> consultasBuscadas = new ArrayList<>();
+        
+        for (ConsultarCitaDTO i : consultas) {
+            if (i.getFecha().toString().toLowerCase().contains(fecha)) {
+                consultasBuscadas.add(i);
+            }
+        }
+        String[] columnas = { "Veterinario", "Mascota", "Dueño", "Motivo", "Tratamiento", "Fecha" };
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+        try {
+            for (ConsultarCitaDTO i : consultasBuscadas) {
+                Object[] fila = new Object[6];
+                fila[0] = i.getNombreVeterinario();
+                fila[1] = i.getNombreMascota();
+                fila[2] = i.getNombreDueno();
+                fila[3] = i.getMotivoConsulta();
+                fila[4] = i.getTratamiento();
+                fila[5] = i.getFecha();
+                modelo.addRow(fila);
+            }
+        } catch (Exception e) {
+            logger.error("Error al cargar tabla", e);
+        }
+        
+        tablaConsultas.setModel(modelo);
+    }//GEN-LAST:event_botonBuscarFechaActionPerformed
+
+    private void botonBuscarMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarMesActionPerformed
+        int mesInt = (Integer) spinnerMes.getValue();
+        
+        String mes = mesInt < 10 ? "0" + mesInt : String.valueOf(mesInt);
+        
+        List<ConsultarCitaDTO> consultas = new CitaDAO().obtenerCitasFiltradas();
+        List<ConsultarCitaDTO> consultasBuscadas = new ArrayList<>();
+        
+        for (ConsultarCitaDTO i : consultas) {
+            if (i.getFecha().toString().toLowerCase().contains(.toLowerCase())) {
+                consultasBuscadas.add(i);
+            }
+        }
+        String[] columnas = { "Veterinario", "Mascota", "Dueño", "Motivo", "Tratamiento", "Fecha" };
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+
+        try {
+            for (ConsultarCitaDTO i : consultasBuscadas) {
+                Object[] fila = new Object[6];
+                fila[0] = i.getNombreVeterinario();
+                fila[1] = i.getNombreMascota();
+                fila[2] = i.getNombreDueno();
+                fila[3] = i.getMotivoConsulta();
+                fila[4] = i.getTratamiento();
+                fila[5] = i.getFecha();
+                modelo.addRow(fila);
+            }
+        } catch (Exception e) {
+            logger.error("Error al cargar tabla", e);
+        }
+        
+        tablaConsultas.setModel(modelo);
+    }//GEN-LAST:event_botonBuscarMesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -239,12 +336,14 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBuscar;
+    private javax.swing.JButton botonBuscarFecha;
+    private javax.swing.JButton botonBuscarMes;
     private javax.swing.JButton botonCerrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JSpinner jSpinner3;
+    private javax.swing.JSpinner spinnerAno;
+    private javax.swing.JSpinner spinnerDia;
+    private javax.swing.JSpinner spinnerMes;
     private javax.swing.JTable tablaConsultas;
     private javax.swing.JTextField textBusquedaVet;
     // End of variables declaration//GEN-END:variables

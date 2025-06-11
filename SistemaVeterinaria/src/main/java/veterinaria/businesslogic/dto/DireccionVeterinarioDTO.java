@@ -1,7 +1,8 @@
 package veterinaria.businesslogic.dto;
 
 public class DireccionVeterinarioDTO {
-    private int numeroDeCasa;
+    private int idCasa;
+    private String numero;
     private String calle;
     private String colonia;
     private Integer cedula;
@@ -9,19 +10,20 @@ public class DireccionVeterinarioDTO {
     public DireccionVeterinarioDTO() {
     }
 
-    public DireccionVeterinarioDTO(int numeroDeCasa, String calle, String colonia, Integer cedula) {
-        this.numeroDeCasa = numeroDeCasa;
+    public DireccionVeterinarioDTO(int idCasa, String numero, String calle, String colonia, Integer cedula) {
+        this.idCasa = idCasa;
+        this.numero = numero;
         this.calle = calle;
         this.colonia = colonia;
         this.cedula = cedula;
     }
 
-    public int getNumeroDeCasa() {
-        return numeroDeCasa;
+    public int getIdCasa() {
+        return idCasa;
     }
 
-    public void setNumeroDeCasa(int numeroDeCasa) {
-        this.numeroDeCasa = numeroDeCasa;
+    public void setIdCasa(int idCasa) {
+        this.idCasa = idCasa;
     }
 
     public String getCalle() {
@@ -47,4 +49,13 @@ public class DireccionVeterinarioDTO {
     public void setCedula(Integer cedula) {
         this.cedula = cedula;
     }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+    
 }

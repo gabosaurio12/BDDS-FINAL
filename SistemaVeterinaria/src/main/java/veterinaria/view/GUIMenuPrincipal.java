@@ -29,6 +29,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         botonCerrar = new javax.swing.JButton();
         botonAgendarCita = new javax.swing.JButton();
         botonConsultarCitas = new javax.swing.JButton();
+        botonVeterinarios = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,6 +79,13 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        botonVeterinarios.setText("Veterinarios");
+        botonVeterinarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonVeterinariosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -89,13 +97,15 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
                         .addComponent(compraBoton))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(115, 115, 115)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(botonDuenos)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(botonMascotas)))))
-                .addContainerGap(100, Short.MAX_VALUE))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 61, Short.MAX_VALUE)
+                        .addComponent(botonDuenos)
+                        .addGap(28, 28, 28)
+                        .addComponent(botonVeterinarios)
+                        .addGap(30, 30, 30)
+                        .addComponent(botonMascotas)))
+                .addContainerGap(63, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -112,7 +122,8 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonMascotas)
-                    .addComponent(botonDuenos))
+                    .addComponent(botonDuenos)
+                    .addComponent(botonVeterinarios))
                 .addGap(28, 28, 28)
                 .addComponent(compraBoton)
                 .addGap(18, 18, 18)
@@ -165,6 +176,13 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         controlador.setVisible(true);
     }//GEN-LAST:event_botonConsultarCitasActionPerformed
 
+    private void botonVeterinariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVeterinariosActionPerformed
+        GUICRUDVeterinario controladorVeterinario = new GUICRUDVeterinario();
+        controladorVeterinario.llenarTablaVeterinarios();
+        controladorVeterinario.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_botonVeterinariosActionPerformed
+
     public static void main(String args[]) {
 
         /* Create and display the form */
@@ -181,6 +199,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton botonConsultarCitas;
     private javax.swing.JButton botonDuenos;
     private javax.swing.JButton botonMascotas;
+    private javax.swing.JButton botonVeterinarios;
     private javax.swing.JButton compraBoton;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables

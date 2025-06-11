@@ -5,29 +5,24 @@ public class VeterinarioDTO {
     private String nombreCompleto;
     private String telefono;
     private String nombreDeUsuario;
-    private String contrasenia;
     private int agenda;
-
     public VeterinarioDTO() {}
 
-    public VeterinarioDTO(int cedula, String nombreCompleto, String telefono, String nombreDeUsuario, String contrasenia) {
+
+    public VeterinarioDTO(int cedula, String nombreCompleto, String telefono, String nombreDeUsuario) {
         this.cedula = cedula;
         this.nombreCompleto = nombreCompleto;
         this.telefono = telefono;
         this.nombreDeUsuario = nombreDeUsuario;
-        this.contrasenia = contrasenia;
     }
 
-    public VeterinarioDTO(int cedula, String nombreCompleto, String telefono, String nombreDeUsuario, String contrasenia, int agenda) {
+    public VeterinarioDTO(int cedula, String nombreCompleto, String telefono, String nombreDeUsuario, int agenda) {
         this.cedula = cedula;
         this.nombreCompleto = nombreCompleto;
         this.telefono = telefono;
         this.nombreDeUsuario = nombreDeUsuario;
-        this.contrasenia = contrasenia;
         this.agenda = agenda;
     }
-    
-    
 
     public int getCedula() {
         return cedula;
@@ -59,14 +54,6 @@ public class VeterinarioDTO {
 
     public void setNombreDeUsuario(String nombreDeUsuario) {
         this.nombreDeUsuario = nombreDeUsuario;
-    }
-
-    public String getContrasenia() {
-        return contrasenia;
-    }
-
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
     }
 
     @Override

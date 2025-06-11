@@ -5,14 +5,12 @@ public class SecretariaDTO {
     private String nombreCompleto;
     private Integer telefono;
     private String nombreDeUsuario;
-    private String contrasenia;
 
-    public SecretariaDTO(int numeroDeINE, String nombreCompleto, Integer telefono, String nombreDeUsuario, String contrasenia) {
+    public SecretariaDTO(int numeroDeINE, String nombreCompleto, Integer telefono, String nombreDeUsuario) {
         this.numeroDeINE = numeroDeINE;
         this.nombreCompleto = nombreCompleto;
         this.telefono = telefono;
         this.nombreDeUsuario = nombreDeUsuario;
-        this.contrasenia = contrasenia;
     }
     
     public int getNumeroDeINE() {
@@ -45,13 +43,5 @@ public class SecretariaDTO {
 
     public void setNombreDeUsuario(String nombreDeUsuario) {
         this.nombreDeUsuario = nombreDeUsuario;
-    }
-
-    public String getContrasenia() {
-        return contrasenia;
-    }
-
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
     }
 }
