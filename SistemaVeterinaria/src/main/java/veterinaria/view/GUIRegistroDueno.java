@@ -58,6 +58,8 @@ public class GUIRegistroDueno extends javax.swing.JFrame {
         textCalle = new javax.swing.JTextField();
         textColonia = new javax.swing.JTextField();
         textNumero = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        textINE = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(356, 375));
@@ -91,15 +93,26 @@ public class GUIRegistroDueno extends javax.swing.JFrame {
 
         jLabel7.setText("Numero");
 
+        jLabel8.setText("INE");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(botonGuardar)
+                        .addGap(59, 59, 59)
+                        .addComponent(botonCancelar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addComponent(jLabel4)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -112,20 +125,17 @@ public class GUIRegistroDueno extends javax.swing.JFrame {
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addComponent(jLabel2)
                                     .addGap(18, 18, 18)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(textNombreDueno)
-                                .addComponent(textTelefonoDueno)
-                                .addComponent(textCorreoDueno, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
-                                .addComponent(textCalle)
-                                .addComponent(textColonia)
-                                .addComponent(textNumero)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(79, 79, 79)
-                            .addComponent(jLabel4)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(botonGuardar)
-                        .addGap(59, 59, 59)
-                        .addComponent(botonCancelar)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(26, 26, 26)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textINE)
+                            .addComponent(textNombreDueno)
+                            .addComponent(textTelefonoDueno)
+                            .addComponent(textCorreoDueno, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                            .addComponent(textCalle)
+                            .addComponent(textColonia)
+                            .addComponent(textNumero))))
                 .addGap(51, 51, 51))
         );
         layout.setVerticalGroup(
@@ -157,7 +167,11 @@ public class GUIRegistroDueno extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(textNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(textINE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonGuardar)
                     .addComponent(botonCancelar))
@@ -225,6 +239,7 @@ public class GUIRegistroDueno extends javax.swing.JFrame {
         dtoDueno.setNombreCompleto(textNombreDueno.getText().trim());
         dtoDueno.setTelefono(textTelefonoDueno.getText().trim());
         dtoDueno.setEmail(textCorreoDueno.getText().trim());
+        dtoDueno.setIne(textINE.getText().trim());
 
         int resultadoDueno = daoDueno.insertar(dtoDueno);
 
@@ -330,9 +345,11 @@ public class GUIRegistroDueno extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField textCalle;
     private javax.swing.JTextField textColonia;
     private javax.swing.JTextField textCorreoDueno;
+    private javax.swing.JTextField textINE;
     private javax.swing.JTextField textNombreDueno;
     private javax.swing.JTextField textNumero;
     private javax.swing.JTextField textTelefonoDueno;

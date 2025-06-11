@@ -16,7 +16,7 @@ public class DuenoDAO {
     public static final String EMAIL = "email";
     
     public int insertar(DuenoDTO dueno) throws SQLException {
-        String sql = "INSERT INTO dueno (telefono, nombreCompleto, email) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO dueno (telefono, nombreCompleto, email, ine) VALUES (?, ?, ?, ?)";
         try (
             Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
@@ -24,6 +24,7 @@ public class DuenoDAO {
             stmt.setString(1, dueno.getTelefono());
             stmt.setString(2, dueno.getNombreCompleto());
             stmt.setString(3, dueno.getEmail());
+            stmt.setString(4, dueno.getIne());
 
             int filasAfectadas = stmt.executeUpdate();
 

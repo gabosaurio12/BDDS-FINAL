@@ -4,8 +4,10 @@ import veterinaria.businesslogic.dto.CitaDTO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import veterinaria.businesslogic.dto.ConsultarCitaDTO;
 import veterinaria.dataaccess.DBConnection;
 
 public class CitaDAO {
@@ -115,5 +117,78 @@ public class CitaDAO {
             logger.error("Error en CitaDAO.obtenerTodasLasCitas", e);
         }
         return lista;
+    }
+    
+    public List<CitaDTO> buscarPorIdDueno(int idDueno) {
+        String query = "SELECT * FROM Cita WHERE idDueno = ?";
+        List<CitaDTO> citas = null;
+        try (Connection connection = DBConnection.getInstance().getConnection();
+                PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, idDueno);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                if (citas == null) {
+                    citas = new ArrayList<>();
+                }
+                CitaDTO cita = new CitaDTO();
+                cita.setEstadoDeCita(result.getString("estadoDeCita"));
+                cita.setIdAgenda(result.getInt("idAgenda"));
+                cita.setIdCita(result.getInt("idCita"));
+                cita.setIdDueno(result.getInt("idDueno"));
+                cita.setIdFechaHora(result.getInt("idFechaHora"));
+                cita.setIdMascota(result.getInt("idMascota"));
+                cita.setMotivoDeConsulta(result.getString("motivoDeConsulta"));
+                cita.setTratamiento(result.getString("tratamiento"));
+                
+                citas.add(cita);
+            }
+        } catch (SQLException e) {
+            logger.error("Error al recopilar citas: ", e);
+        }
+        
+        return citas;
+    }
+    
+    public List<ConsultarCitaDTO> obtenerCitasFiltradas() {
+        String query = "SELECT " +
+                "v.nombreCompleto AS nombreVeterinario, " +
+                "m.nombre AS nombreMascota, " +
+                "d.nombreCompleto AS nombreDueno, " +
+                "c.motivoDeConsulta, " +
+                "c.tratamiento, " +
+                "c.estadoDeCita, " +
+                "f.fecha, " +
+                "h.hora " +
+                "FROM Cita c " +
+                "JOIN Mascota m ON c.idMascota = m.idMascota " +
+                "JOIN Dueno d ON m.idDuenio = d.idDuenio " +
+                "JOIN Veterinario v ON c.idAgenda = v.agendaID " +
+                "JOIN FechaHora fh ON c.idFechaHora = fh.idFechaHora " +
+                "JOIN Fecha f ON fh.idFecha = f.idFecha " +
+                "JOIN Hora h ON fh.idHora = h.idHora";
+        try (Connection connection = DBConnection.getInstance().getConnection();
+                PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet result = statement.executeQuery();
+            List<ConsultarCitaDTO> consultas = new ArrayList<>();
+            while (result.next()) {
+                ConsultarCitaDTO consulta = new ConsultarCitaDTO();
+                consulta.setEstadoCita(result.getString("estadoDeCita"));
+                consulta.setMotivoConsulta(result.getString("motivoDeConsulta"));
+                consulta.setNombreDueno(result.getString("nombreDueno"));
+                consulta.setNombreMascota(result.getString("nombreMascota"));
+                consulta.setNombreVeterinario(result.getString("nombreVeterinario"));
+                consulta.setTratamiento(result.getString("tratamiento"));
+                consulta.setFecha(result.getDate("fecha"));
+                
+                consultas.add(consulta);
+            }
+            
+            return consultas;
+            
+        } catch (SQLException ex) {
+            logger.error("Error al obtener todas las citas filtradas: ", ex);
+        }
+        
+        return null;
     }
 }

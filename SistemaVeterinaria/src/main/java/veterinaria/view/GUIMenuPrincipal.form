@@ -48,6 +48,7 @@
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="botonAgendarCita" max="32767" attributes="0"/>
                   <Component id="botonCerrar" min="-2" pref="105" max="-2" attributes="0"/>
+                  <Component id="botonConsultarCitas" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="154" max="-2" attributes="0"/>
           </Group>
@@ -67,9 +68,11 @@
               <Component id="compraBoton" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="botonAgendarCita" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="botonConsultarCitas" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="52" max="32767" attributes="0"/>
               <Component id="botonCerrar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="53" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -124,6 +127,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonAgendarCitaActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="botonConsultarCitas">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Consultar Citas"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonConsultarCitasActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

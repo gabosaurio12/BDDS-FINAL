@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `dueno`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dueno` (
   `idDuenio` int NOT NULL AUTO_INCREMENT,
-  `telefono` int DEFAULT NULL,
+  `telefono` VARCHAR(15) DEFAULT NULL,
   `nombreCompleto` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idDuenio`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -40,7 +40,7 @@ DROP TABLE IF EXISTS `secretaria`;
 CREATE TABLE `secretaria` (
   `numeroDeINE` int NOT NULL AUTO_INCREMENT,
   `nombreCompleto` varchar(255) DEFAULT NULL,
-  `telefono` int DEFAULT NULL,
+  `telefono` VARCHAR(15) DEFAULT NULL,
   `nombreDeUsuario` varchar(50) DEFAULT NULL,
   `contrasenia` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`numeroDeINE`)
@@ -57,7 +57,7 @@ DROP TABLE IF EXISTS `veterinario`;
 CREATE TABLE `veterinario` (
   `Cedula` int NOT NULL,
   `nombreCompleto` varchar(255) DEFAULT NULL,
-  `telefono` int DEFAULT NULL,
+  `telefono` VARCHAR(15) DEFAULT NULL,
   `nombreDeUsuario` varchar(50) DEFAULT NULL,
   `contrasenia` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`Cedula`)

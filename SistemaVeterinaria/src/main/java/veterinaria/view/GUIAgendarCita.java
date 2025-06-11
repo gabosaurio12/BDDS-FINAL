@@ -66,7 +66,6 @@ public class GUIAgendarCita extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         comboMascotas = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         comboVeterinarios = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
@@ -75,6 +74,7 @@ public class GUIAgendarCita extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         botonCancelar = new javax.swing.JButton();
         botonGuardar = new javax.swing.JButton();
+        textFieldINE = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,9 +90,7 @@ public class GUIAgendarCita extends javax.swing.JFrame {
 
         comboMascotas.setModel(new javax.swing.DefaultComboBoxModel<>());
 
-        jLabel4.setText("Dueño");
-
-        jLabel5.setText("Dueño");
+        jLabel4.setText("INE");
 
         jLabel6.setText("Veterinario");
 
@@ -151,9 +149,9 @@ public class GUIAgendarCita extends javax.swing.JFrame {
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel4))
                                 .addGap(65, 65, 65)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(comboMascotas, 0, 372, Short.MAX_VALUE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(textFieldINE)
+                                    .addComponent(comboMascotas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
@@ -162,10 +160,10 @@ public class GUIAgendarCita extends javax.swing.JFrame {
                                     .addComponent(jLabel8))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
                                     .addComponent(comboVeterinarios, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(comboHoras, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE))))))
                 .addGap(16, 16, 16))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -186,7 +184,7 @@ public class GUIAgendarCita extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(textFieldINE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
@@ -199,7 +197,7 @@ public class GUIAgendarCita extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -292,7 +290,7 @@ public class GUIAgendarCita extends javax.swing.JFrame {
         MascotaDTO mascota = (MascotaDTO) comboMascotas.getSelectedItem();
         cita.setIdMascota(mascota.getIdMascota());
         VeterinarioDTO veterinario = (VeterinarioDTO) comboVeterinarios.getSelectedItem();
-        cita.setIdDueno(veterinario.getCedula());
+        cita.setIdDueno(mascota.getIdDuenio());
         cita.setIdAgenda(veterinario.getAgenda());
         cita.setIdFechaHora(new FechaHoraDAO().getFechaIdPorFechaHora(fechaSQL, 
                 (String) comboHoras.getSelectedItem(), 
@@ -356,12 +354,12 @@ public class GUIAgendarCita extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField textFieldINE;
     private javax.swing.JTextArea textFieldMotivo;
     // End of variables declaration//GEN-END:variables
 }

@@ -28,6 +28,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         compraBoton = new javax.swing.JButton();
         botonCerrar = new javax.swing.JButton();
         botonAgendarCita = new javax.swing.JButton();
+        botonConsultarCitas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,6 +71,13 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        botonConsultarCitas.setText("Consultar Citas");
+        botonConsultarCitas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonConsultarCitasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -92,7 +100,8 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(botonAgendarCita, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(botonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(botonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonConsultarCitas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(154, 154, 154))
         );
         layout.setVerticalGroup(
@@ -108,9 +117,11 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
                 .addComponent(compraBoton)
                 .addGap(18, 18, 18)
                 .addComponent(botonAgendarCita)
-                .addGap(35, 35, 35)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botonConsultarCitas)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addComponent(botonCerrar)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addGap(50, 50, 50))
         );
 
         pack();
@@ -149,6 +160,11 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_botonDuenosActionPerformed
 
+    private void botonConsultarCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConsultarCitasActionPerformed
+        GUIConsultarCitas controlador = new GUIConsultarCitas();
+        controlador.setVisible(true);
+    }//GEN-LAST:event_botonConsultarCitasActionPerformed
+
     public static void main(String args[]) {
 
         /* Create and display the form */
@@ -162,6 +178,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAgendarCita;
     private javax.swing.JButton botonCerrar;
+    private javax.swing.JButton botonConsultarCitas;
     private javax.swing.JButton botonDuenos;
     private javax.swing.JButton botonMascotas;
     private javax.swing.JButton compraBoton;

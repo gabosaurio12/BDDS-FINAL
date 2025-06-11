@@ -5,6 +5,7 @@ public class DuenoDTO {
     private String telefono;
     private String nombreCompleto;
     private String email;
+    private String ine;
 
     public DuenoDTO() {}
 
@@ -22,6 +23,15 @@ public class DuenoDTO {
     public String getNombreCompleto() { return nombreCompleto; }
     public void setNombreCompleto(String nombreCompleto) { this.nombreCompleto = nombreCompleto; }
 
+    public String getIne() {
+        return ine;
+    }
+
+    public void setIne(String ine) {
+        this.ine = ine;
+    }
+
+    
     public String getEmail() {
         return email;
     }
