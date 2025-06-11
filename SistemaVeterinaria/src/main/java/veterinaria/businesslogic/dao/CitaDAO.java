@@ -12,7 +12,7 @@ public class CitaDAO {
     private Connection connection;
     private static final Logger logger = LogManager.getLogger(CitaDAO.class);
 
-    public CitaDAO(DBConnection connection) {
+    public CitaDAO() {
         try {
             this.connection = DBConnection.getInstance().getConnection();
         } catch (SQLException ex) {
@@ -21,16 +21,17 @@ public class CitaDAO {
     }
 
     public boolean insertarCita(CitaDTO cita) {
-        String sql = "INSERT INTO cita (idCita, tratamiento, motivoDeConsulta, estadoDeCita, numeroDeINE, idMascota, cedula) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO cita (motivoDeConsulta, "
+                + "estadoDeCita, idMascota, idDueno, idAgenda, "
+                + "idFechaHora) VALUES (?, ?, ?, ?, ?, ?)";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, cita.getIdCita());
-            stmt.setString(2, cita.getTratamiento());
-            stmt.setString(3, cita.getMotivoDeConsulta());
-            stmt.setString(4, cita.getEstadoDeCita());
-            stmt.setInt(5, cita.getNumeroDeINE());
-            stmt.setInt(6, cita.getIdMascota());
-            stmt.setInt(7, cita.getCedula());
+            stmt.setString(1, cita.getMotivoDeConsulta());
+            stmt.setString(2, cita.getEstadoDeCita());
+            stmt.setInt(3, cita.getIdMascota());
+            stmt.setInt(4, cita.getIdDueno());
+            stmt.setInt(5, cita.getIdAgenda());
+            stmt.setInt(6, cita.getIdFechaHora());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -40,15 +41,17 @@ public class CitaDAO {
     }
 
     public boolean actualizarCita(CitaDTO cita) {
-        String sql = "UPDATE cita SET tratamiento = ?, motivoDeConsulta = ?, estadoDeCita = ?, numeroDeINE = ?, idMascota = ?, cedula = ? WHERE idCita = ?";
+        String sql = "UPDATE cita SET tratamiento = ?, motivoDeConsulta = ?, "
+                + "estadoDeCita = ?, idMascota = ?, idDueno = ?, "
+                + "idAgenda = ?, idFechaHora WHERE idCita = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, cita.getTratamiento());
             stmt.setString(2, cita.getMotivoDeConsulta());
             stmt.setString(3, cita.getEstadoDeCita());
-            stmt.setInt(4, cita.getNumeroDeINE());
-            stmt.setInt(5, cita.getIdMascota());
-            stmt.setInt(6, cita.getCedula());
-            stmt.setInt(7, cita.getIdCita());
+            stmt.setInt(4, cita.getIdMascota());
+            stmt.setInt(5, cita.getIdDueno());
+            stmt.setInt(6, cita.getIdAgenda());
+            stmt.setInt(7, cita.getIdFechaHora());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -75,13 +78,14 @@ public class CitaDAO {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new CitaDTO(
-                    rs.getInt("idCita"),
-                    rs.getString("tratamiento"),
-                    rs.getString("motivoDeConsulta"),
-                    rs.getString("estadoDeCita"),
-                    rs.getInt("numeroDeINE"),
-                    rs.getInt("idMascota"),
-                    rs.getInt("cedula")
+                        rs.getInt("idCita"),
+                        rs.getString("tratamiento"),
+                        rs.getString("motivoDeConsulta"),
+                        rs.getString("estadoDeCita"),
+                        rs.getInt("idMascota"),
+                        rs.getInt("idDueno"),
+                        rs.getInt("idAgenda"),
+                        rs.getInt("idFechaHora")
                 );
             }
         } catch (SQLException e) {
@@ -97,13 +101,14 @@ public class CitaDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 lista.add(new CitaDTO(
-                    rs.getInt("idCita"),
-                    rs.getString("tratamiento"),
-                    rs.getString("motivoDeConsulta"),
-                    rs.getString("estadoDeCita"),
-                    rs.getInt("numeroDeINE"),
-                    rs.getInt("idMascota"),
-                    rs.getInt("cedula")
+                        rs.getInt("idCita"),
+                        rs.getString("tratamiento"),
+                        rs.getString("motivoDeConsulta"),
+                        rs.getString("estadoDeCita"),
+                        rs.getInt("idMascota"),
+                        rs.getInt("idDueno"),
+                        rs.getInt("idAgenda"),
+                        rs.getInt("idFechaHora")
                 ));
             }
         } catch (SQLException e) {

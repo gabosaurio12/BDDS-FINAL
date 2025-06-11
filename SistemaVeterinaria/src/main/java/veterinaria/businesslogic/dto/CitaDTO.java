@@ -5,20 +5,22 @@ public class CitaDTO {
     private String tratamiento;
     private String motivoDeConsulta;
     private String estadoDeCita;
-    private int numeroDeINE;
     private int idMascota;
-    private int cedula;
+    private int idDueno;
+    private int idAgenda;
+    private int idFechaHora;
 
     public CitaDTO() {}
 
-    public CitaDTO(int idCita, String tratamiento, String motivoDeConsulta, String estadoDeCita, int numeroDeINE, int idMascota, int cedula) {
+    public CitaDTO(int idCita, String tratamiento, String motivoDeConsulta, String estadoDeCita, int idMascota, int idDueno, int idAgenda, int idFechaHora) {
         this.idCita = idCita;
         this.tratamiento = tratamiento;
         this.motivoDeConsulta = motivoDeConsulta;
         this.estadoDeCita = estadoDeCita;
-        this.numeroDeINE = numeroDeINE;
         this.idMascota = idMascota;
-        this.cedula = cedula;
+        this.idDueno = idDueno;
+        this.idAgenda = idAgenda;
+        this.idFechaHora = idFechaHora;
     }
 
     public int getIdCita() {
@@ -53,14 +55,6 @@ public class CitaDTO {
         this.estadoDeCita = estadoDeCita;
     }
 
-    public int getNumeroDeINE() {
-        return numeroDeINE;
-    }
-
-    public void setNumeroDeINE(int numeroDeINE) {
-        this.numeroDeINE = numeroDeINE;
-    }
-
     public int getIdMascota() {
         return idMascota;
     }
@@ -69,11 +63,29 @@ public class CitaDTO {
         this.idMascota = idMascota;
     }
 
-    public int getCedula() {
-        return cedula;
+    public int getIdDueno() {
+        return idDueno;
     }
 
-    public void setCedula(int cedula) {
-        this.cedula = cedula;
+    public void setIdDueno(int idDueno) {
+        this.idDueno = idDueno;
     }
+
+    public int getIdAgenda() {
+        return idAgenda;
+    }
+
+    public void setIdAgenda(int idAgenda) {
+        this.idAgenda = idAgenda;
+    }
+
+    public int getIdFechaHora() {
+        return idFechaHora;
+    }
+
+    public void setIdFechaHora(int idFechaHora) {
+        this.idFechaHora = idFechaHora;
+    }
+
+    
 }

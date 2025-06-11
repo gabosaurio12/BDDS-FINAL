@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,21 +17,36 @@ public class VeterinarioDAO {
 
     private static final Logger logger = LogManager.getLogger(VeterinarioDAO.class);
 
-    public boolean insertarVeterinario(VeterinarioDTO veterinario) {
-        String sql = "INSERT INTO veterinarios (cedula, nombreCompleto, telefono, nombreDeUsuario, contrasenia) VALUES (?, ?, ?, ?, ?)";
+    public int insertarVeterinario(VeterinarioDTO veterinario) {
+        int filasAfectadas = 1;
+        String queryAgenda = "INSERT INTO Agenda VALUES ()";
+        
         try (Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, veterinario.getCedula());
-            pstmt.setString(2, veterinario.getNombreCompleto());
-            pstmt.setObject(3, veterinario.getTelefono());
-            pstmt.setString(4, veterinario.getNombreDeUsuario());
-            pstmt.setString(5, veterinario.getContrasenia());
-            int filasAfectadas = pstmt.executeUpdate();
-            return filasAfectadas > 0;
+            PreparedStatement statement = connection.prepareStatement(queryAgenda, RETURN_GENERATED_KEYS)) {
+            statement.executeUpdate();
+            ResultSet result = statement.getGeneratedKeys();
+            if (result.next()) {
+                int agenda = result.getInt(1);
+                String insertQuery = "INSERT INTO veterinario (cedula, "
+                        + "nombreCompleto, telefono, nombreDeUsuario, "
+                        + "contrasenia, agendaID) VALUES (?, ?, ?, ?, ?, ?)";
+                PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
+
+                insertStatement.setInt(1, veterinario.getCedula());
+                insertStatement.setString(2, veterinario.getNombreCompleto());
+                insertStatement.setObject(3, veterinario.getTelefono());
+                insertStatement.setString(4, veterinario.getNombreDeUsuario());
+                insertStatement.setString(5, veterinario.getContrasenia());
+                insertStatement.setInt(6, agenda);
+                filasAfectadas = insertStatement.executeUpdate();
+            }            
+            
         } catch (SQLException e) {
             logger.error("Error al insertar veterinario: ", e);
-            return false;
+            filasAfectadas = 0;
         }
+        
+        return filasAfectadas;
     }
 
     public VeterinarioDTO seleccionarVeterinarioPorCedula(int cedula) {
@@ -43,9 +59,10 @@ public class VeterinarioDAO {
                     return new VeterinarioDTO(
                             rs.getInt("cedula"),
                             rs.getString("nombreCompleto"),
-                            (Integer) rs.getObject("telefono"),
+                            rs.getString("telefono"),
                             rs.getString("nombreDeUsuario"),
-                            rs.getString("contrasenia")
+                            rs.getString("contrasenia"),
+                            rs.getInt("idAgenda")
                     );
                 }
             }
@@ -57,7 +74,7 @@ public class VeterinarioDAO {
 
     public List<VeterinarioDTO> seleccionarTodosLosVeterinarios() {
         List<VeterinarioDTO> listaVeterinarios = new ArrayList<>();
-        String sql = "SELECT * FROM veterinarios";
+        String sql = "SELECT * FROM veterinario";
         try (Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement pstmt = connection.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
@@ -65,10 +82,11 @@ public class VeterinarioDAO {
                 listaVeterinarios.add(new VeterinarioDTO(
                         rs.getInt("cedula"),
                         rs.getString("nombreCompleto"),
-                        (Integer) rs.getObject("telefono"),
+                        rs.getString("telefono"),
                         rs.getString("nombreDeUsuario"),
-                        rs.getString("contrasenia")
-                ));
+                        rs.getString("contrasenia"),
+                        rs.getInt("agendaId"))
+                );
             }
         } catch (SQLException e) {
             logger.error("Error al seleccionar todos los veterinarios: ", e);

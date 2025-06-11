@@ -18,7 +18,7 @@ public class DireccionDuenoDAO {
     public static final String ID_DUENIO = "idDuenio";
 
     public boolean insertarDireccion(DireccionDuenoDTO direccion) throws SQLException {
-        String sql = "INSERT INTO direccion_dueno (calle, colonia, numero, idDuenio) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO direccion_dueno (calle, colonia, numeroDeCasa, idDuenio) VALUES (?, ?, ?, ?)";
         try (Connection connection = DBConnection.getInstance().getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             

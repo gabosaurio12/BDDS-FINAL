@@ -6,18 +6,25 @@ package veterinaria.view;
 
 import java.awt.BorderLayout;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import veterinaria.businesslogic.dao.AgendaDAO;
+import veterinaria.businesslogic.dao.CitaDAO;
+import veterinaria.businesslogic.dao.DuenoDAO;
+import veterinaria.businesslogic.dao.FechaHoraDAO;
 import veterinaria.businesslogic.dao.MascotaDAO;
 import veterinaria.businesslogic.dao.VeterinarioDAO;
+import veterinaria.businesslogic.dto.CitaDTO;
+import veterinaria.businesslogic.dto.DuenoDTO;
 import veterinaria.businesslogic.dto.MascotaDTO;
 import veterinaria.businesslogic.dto.VeterinarioDTO;
 
@@ -27,6 +34,7 @@ import veterinaria.businesslogic.dto.VeterinarioDTO;
  */
 public class GUIAgendarCita extends javax.swing.JFrame {
 
+    private java.sql.Date fechaSQL;
     /**
      * Creates new form GUIAgendarCita
      */
@@ -40,7 +48,6 @@ public class GUIAgendarCita extends javax.swing.JFrame {
         initDatePicker();
         setComboMascotas();
         setComboVeterinarios();
-        setComboHoras();
     }
 
     /**
@@ -55,7 +62,7 @@ public class GUIAgendarCita extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        textFieldMotivo = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
         comboMascotas = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
@@ -66,6 +73,8 @@ public class GUIAgendarCita extends javax.swing.JFrame {
         comboHoras = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        botonCancelar = new javax.swing.JButton();
+        botonGuardar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,9 +82,9 @@ public class GUIAgendarCita extends javax.swing.JFrame {
 
         jLabel2.setText("Motivo de la cita");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        textFieldMotivo.setColumns(20);
+        textFieldMotivo.setRows(5);
+        jScrollPane1.setViewportView(textFieldMotivo);
 
         jLabel3.setText("Mascota");
 
@@ -111,6 +120,20 @@ public class GUIAgendarCita extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        botonCancelar.setText("Cancelar");
+        botonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCancelarActionPerformed(evt);
+            }
+        });
+
+        botonGuardar.setText("Guardar");
+        botonGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonGuardarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -144,6 +167,12 @@ public class GUIAgendarCita extends javax.swing.JFrame {
                                     .addComponent(comboHoras, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                 .addGap(16, 16, 16))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(botonCancelar)
+                .addGap(68, 68, 68)
+                .addComponent(botonGuardar)
+                .addGap(50, 50, 50))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,7 +207,11 @@ public class GUIAgendarCita extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(comboHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(87, 87, 87))
+                .addGap(41, 41, 41)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonCancelar)
+                    .addComponent(botonGuardar))
+                .addGap(23, 23, 23))
         );
 
         pack();
@@ -200,6 +233,13 @@ public class GUIAgendarCita extends javax.swing.JFrame {
 
         jPanel1.revalidate();
         jPanel1.repaint();
+        
+        datePicker.addActionListener(e -> {
+            String selectedDate = datePicker.getJFormattedTextField().getText();
+            if (selectedDate != null) {
+                setComboHoras(selectedDate);
+            }
+        });
     }
     
     private void setComboMascotas() {
@@ -210,25 +250,33 @@ public class GUIAgendarCita extends javax.swing.JFrame {
             logger.error("Error al recopilar Mascotas", ex);
         }
         
-        DefaultComboBoxModel<MascotaDTO> modelo = new DefaultComboBoxModel<>(mascotas.toArray(new MascotaDTO[0]));
-        comboMascotas.setModel(modelo);
+        for (MascotaDTO mascota : mascotas) {
+            comboMascotas.addItem(mascota);
+        }
     }
     
-    public void setComboVeterinarios() {
+    private void setComboVeterinarios() {
         List<VeterinarioDTO> veterinarios = new VeterinarioDAO().seleccionarTodosLosVeterinarios();
         
-        DefaultComboBoxModel<VeterinarioDTO> modelo = new DefaultComboBoxModel<>(veterinarios.toArray(new VeterinarioDTO[0]));
-        comboVeterinarios.setModel(modelo);
+        for (VeterinarioDTO veterinario : veterinarios) {
+            comboVeterinarios.addItem(veterinario);
+        }
     }
     
-    public void setComboHoras() {
-        List<String> horas = new ArrayList<>();
-        for (int h= 5; h < 23; h++) {
-            for (int minutos = 0; minutos < 60; minutos += 30) {
-                String horaFormateada = String.format("%02d:%02d", h, minutos);
-                horas.add(horaFormateada);
-            }
+    public void setComboHoras(String fecha) {
+        VeterinarioDTO veterinario = (VeterinarioDTO) comboVeterinarios.getSelectedItem();
+        int agendaVet = veterinario.getAgenda();
+        
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date fechaUtil = null;
+        try {
+            fechaUtil = formato.parse(fecha);
+        } catch (ParseException ex) {
+            logger.error("Error al formatear fecha", ex);
         }
+        
+        fechaSQL = new java.sql.Date(fechaUtil.getTime());
+        List<String> horas = new AgendaDAO().obtenerCitasDisponibles(fechaSQL, agendaVet);
         
         DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>(horas.toArray(new String[0]));
         comboHoras.setModel(modelo);
@@ -237,6 +285,31 @@ public class GUIAgendarCita extends javax.swing.JFrame {
     private void comboHorasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboHorasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboHorasActionPerformed
+
+    public void getTextFieldsData(CitaDTO cita) {
+        cita.setMotivoDeConsulta(textFieldMotivo.getText());
+        cita.setEstadoDeCita("Pendiente");
+        MascotaDTO mascota = (MascotaDTO) comboMascotas.getSelectedItem();
+        cita.setIdMascota(mascota.getIdMascota());
+        VeterinarioDTO veterinario = (VeterinarioDTO) comboVeterinarios.getSelectedItem();
+        cita.setIdDueno(veterinario.getCedula());
+        cita.setIdAgenda(veterinario.getAgenda());
+        cita.setIdFechaHora(new FechaHoraDAO().getFechaIdPorFechaHora(fechaSQL, 
+                (String) comboHoras.getSelectedItem(), 
+                veterinario.getAgenda()));
+    }
+    
+    private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
+        CitaDTO cita = new CitaDTO();
+        getTextFieldsData(cita);
+        new CitaDAO().insertarCita(cita);
+    }//GEN-LAST:event_botonGuardarActionPerformed
+
+    private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
+        GUIMenuPrincipal controlador = new GUIMenuPrincipal();
+        controlador.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_botonCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -274,6 +347,8 @@ public class GUIAgendarCita extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonCancelar;
+    private javax.swing.JButton botonGuardar;
     private javax.swing.JComboBox<String> comboHoras;
     private javax.swing.JComboBox<MascotaDTO> comboMascotas;
     private javax.swing.JComboBox<VeterinarioDTO> comboVeterinarios;
@@ -287,6 +362,6 @@ public class GUIAgendarCita extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea textFieldMotivo;
     // End of variables declaration//GEN-END:variables
 }
