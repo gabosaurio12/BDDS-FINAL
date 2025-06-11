@@ -3,18 +3,16 @@ package veterinaria.businesslogic.dto;
 public class VeterinarioDTO {
     private int cedula;
     private String nombreCompleto;
-    private Integer telefono;
+    private String telefono;
     private String nombreDeUsuario;
-    private String contrasenia;
 
     public VeterinarioDTO() {}
 
-    public VeterinarioDTO(int cedula, String nombreCompleto, Integer telefono, String nombreDeUsuario, String contrasenia) {
+    public VeterinarioDTO(int cedula, String nombreCompleto, String telefono, String nombreDeUsuario) {
         this.cedula = cedula;
         this.nombreCompleto = nombreCompleto;
         this.telefono = telefono;
         this.nombreDeUsuario = nombreDeUsuario;
-        this.contrasenia = contrasenia;
     }
 
     public int getCedula() {
@@ -33,11 +31,11 @@ public class VeterinarioDTO {
         this.nombreCompleto = nombreCompleto;
     }
 
-    public Integer getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(Integer telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
@@ -47,14 +45,6 @@ public class VeterinarioDTO {
 
     public void setNombreDeUsuario(String nombreDeUsuario) {
         this.nombreDeUsuario = nombreDeUsuario;
-    }
-
-    public String getContrasenia() {
-        return contrasenia;
-    }
-
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
     }
 
     @Override

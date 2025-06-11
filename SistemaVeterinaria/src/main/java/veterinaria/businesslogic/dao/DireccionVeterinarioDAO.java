@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,31 +16,45 @@ import veterinaria.dataaccess.DBConnection;
 public class DireccionVeterinarioDAO {
     private final Logger logger = LogManager.getLogger(DireccionVeterinarioDAO.class);
 
-    public boolean insertarDireccionVeterinario(DireccionVeterinarioDTO direccionVeterinario) {
-        String sql = "INSERT INTO direccion_veterinario (numeroDeCasa, calle, colonia, cedula) VALUES (?, ?, ?, ?)";
+    public boolean insertarDireccionVeterinario(DireccionVeterinarioDTO direccionVeterinario) throws SQLException {
+        String sql = "INSERT INTO direccion_veterinario (calle, colonia, numero, cedula) VALUES (?, ?, ?, ?)";
         try (Connection connection = DBConnection.getInstance().getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, direccionVeterinario.getNumeroDeCasa());
-            pstmt.setString(2, direccionVeterinario.getCalle());
-            pstmt.setString(3, direccionVeterinario.getColonia());
+             PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            pstmt.setString(1, direccionVeterinario.getCalle());
+            pstmt.setString(2, direccionVeterinario.getColonia());
+            pstmt.setString(3, direccionVeterinario.getNumero()); // Corregido: es String, no int
             pstmt.setObject(4, direccionVeterinario.getCedula());
+
             int filasAfectadas = pstmt.executeUpdate();
-            return filasAfectadas > 0;
+
+            if (filasAfectadas > 0) {
+                try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        direccionVeterinario.setIdCasa(rs.getInt(1));
+                    }
+                }
+                return true;
+            }
+            return false;
+
         } catch (SQLException e) {
-            logger.error("Error al insertar dirección de veterinario: ", e);
+            logger.error("Error al insertar dirección de veterinario", e);
             return false;
         }
     }
 
-    public DireccionVeterinarioDTO seleccionarDireccionVeterinarioPorNumeroDeCasa(int numeroDeCasa) {
-        String sql = "SELECT * FROM direccion_veterinario WHERE numeroDeCasa = ?";
+    public DireccionVeterinarioDTO seleccionarDireccionVeterinarioPorId(int idCasa) throws SQLException {
+        String sql = "SELECT * FROM direccion_veterinario WHERE idCasa = ?";
         try (Connection connection = DBConnection.getInstance().getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, numeroDeCasa);
+
+            pstmt.setInt(1, idCasa);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return new DireccionVeterinarioDTO(
-                            rs.getInt("numeroDeCasa"),
+                            rs.getInt("idCasa"),
+                            rs.getString("numero"),
                             rs.getString("calle"),
                             rs.getString("colonia"),
                             (Integer) rs.getObject("cedula")
@@ -47,12 +62,12 @@ public class DireccionVeterinarioDAO {
                 }
             }
         } catch (SQLException e) {
-            logger.error("Error al seleccionar dirección de veterinario por número de casa: " + e);
+            logger.error("Error al seleccionar dirección de veterinario por número", e);
         }
         return null;
     }
 
-    public List<DireccionVeterinarioDTO> seleccionarTodasLasDireccionesVeterinario() {
+    public List<DireccionVeterinarioDTO> seleccionarTodasLasDireccionesVeterinario() throws SQLException {
         List<DireccionVeterinarioDTO> listaDirecciones = new ArrayList<>();
         String sql = "SELECT * FROM direccion_veterinario";
         try (Connection connection = DBConnection.getInstance().getConnection();
@@ -60,44 +75,60 @@ public class DireccionVeterinarioDAO {
              ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 listaDirecciones.add(new DireccionVeterinarioDTO(
-                        rs.getInt("numeroDeCasa"),
+                        rs.getInt("idCasa"),
+                        rs.getString("numero"),        
                         rs.getString("calle"),
                         rs.getString("colonia"),
                         (Integer) rs.getObject("cedula")
                 ));
             }
         } catch (SQLException e) {
-            logger.error("Error al seleccionar todas las direcciones de veterinario: " + e);
+            logger.error("Error al seleccionar todas las direcciones de veterinario", e);
         }
         return listaDirecciones;
     }
 
-    public boolean actualizarDireccionVeterinario(DireccionVeterinarioDTO direccionVeterinario) {
-        String sql = "UPDATE direccion_veterinario SET calle = ?, colonia = ?, cedula = ? WHERE numeroDeCasa = ?";
+    public boolean actualizarDireccionVeterinario(DireccionVeterinarioDTO direccionVeterinario) throws SQLException {
+        String sql = "UPDATE direccion_veterinario SET calle = ?, colonia = ?, numeroDeCasa = ?, cedula = ? WHERE idCasa = ?";
         try (Connection connection = DBConnection.getInstance().getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
             pstmt.setString(1, direccionVeterinario.getCalle());
             pstmt.setString(2, direccionVeterinario.getColonia());
-            pstmt.setObject(3, direccionVeterinario.getCedula());
-            pstmt.setInt(4, direccionVeterinario.getNumeroDeCasa());
-            int filasAfectadas = pstmt.executeUpdate();
-            return filasAfectadas > 0;
+            pstmt.setInt(3, direccionVeterinario.getIdCasa());
+            pstmt.setObject(4, direccionVeterinario.getCedula());
+            pstmt.setInt(5, direccionVeterinario.getIdCasa()); 
+
+            return pstmt.executeUpdate() > 0;
+
         } catch (SQLException e) {
-            logger.error("Error al actualizar dirección de veterinario: " + e);
+            logger.error("Error al actualizar dirección de veterinario", e);
             return false;
         }
     }
 
-    public boolean eliminarDireccionVeterinario(int numeroDeCasa) {
-        String sql = "DELETE FROM direccion_veterinario WHERE numeroDeCasa = ?";
+    public List<DireccionVeterinarioDTO> obtenerDireccionesPorCedula(int cedula) throws SQLException {
+        List<DireccionVeterinarioDTO> lista = new ArrayList<>();
+        String sql = "SELECT * FROM direccion_veterinario WHERE cedula = ?";
+
         try (Connection connection = DBConnection.getInstance().getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, numeroDeCasa);
-            int filasAfectadas = pstmt.executeUpdate();
-            return filasAfectadas > 0;
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, cedula);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(new DireccionVeterinarioDTO(
+                        rs.getInt("idCasa"),
+                        rs.getString("numero"),
+                        rs.getString("calle"),
+                        rs.getString("colonia"),
+                        (Integer) rs.getObject("cedula")
+                    ));
+                }
+            }
         } catch (SQLException e) {
-            logger.error("Error al eliminar dirección de veterinario: " + e);
-            return false;
+            logger.error("Error al obtener direcciones por cédula", e);
         }
+        return lista;
     }
 }

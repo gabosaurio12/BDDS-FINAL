@@ -15,18 +15,54 @@ import veterinaria.dataaccess.DBConnection;
 public class VeterinarioDAO {
 
     private static final Logger logger = LogManager.getLogger(VeterinarioDAO.class);
+    
+    private String generarNombreDeUsuario() {
+        String sql = "SELECT nombreDeUsuario FROM veterinario WHERE nombreDeUsuario LIKE 'VET-%' ORDER BY CAST(SUBSTRING(nombreDeUsuario, 5) AS UNSIGNED) DESC LIMIT 1";
+        
+        try (Connection connection = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String ultimoNombre = rs.getString("nombreDeUsuario");
+                    String numeroStr = ultimoNombre.substring(4); 
+                    int ultimoNumero = Integer.parseInt(numeroStr);
+                    int siguienteNumero = ultimoNumero + 1;
+                    
+                    return String.format("VET-%03d", siguienteNumero);
+                } else {
+                    // Si no hay registros, empezar con VET-001
+                    return "VET-001";
+                }
+            }
+        } catch (SQLException | NumberFormatException e) {
+            logger.error("Error al generar nombre de usuario, usando VET-001 por defecto: ", e);
+            return "VET-001";
+        }
+    }
 
     public boolean insertarVeterinario(VeterinarioDTO veterinario) {
-        String sql = "INSERT INTO veterinarios (cedula, nombreCompleto, telefono, nombreDeUsuario, contrasenia) VALUES (?, ?, ?, ?, ?)";
+        // Generar automáticamente el nombre de usuario
+        String nombreUsuarioGenerado = generarNombreDeUsuario();
+        
+        String sql = "INSERT INTO veterinario (cedula, nombreCompleto, telefono, nombreDeUsuario) VALUES (?, ?, ?, ?)";
         try (Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            
             pstmt.setInt(1, veterinario.getCedula());
             pstmt.setString(2, veterinario.getNombreCompleto());
-            pstmt.setObject(3, veterinario.getTelefono());
-            pstmt.setString(4, veterinario.getNombreDeUsuario());
-            pstmt.setString(5, veterinario.getContrasenia());
+            pstmt.setString(3, veterinario.getTelefono()); 
+            pstmt.setString(4, nombreUsuarioGenerado);
+            
             int filasAfectadas = pstmt.executeUpdate();
-            return filasAfectadas > 0;
+            
+            if (filasAfectadas > 0) {
+                logger.info("Veterinario insertado exitosamente con nombre de usuario: {}", nombreUsuarioGenerado);
+                veterinario.setNombreDeUsuario(nombreUsuarioGenerado);
+                return true;
+            }
+            return false;
+            
         } catch (SQLException e) {
             logger.error("Error al insertar veterinario: ", e);
             return false;
@@ -34,7 +70,7 @@ public class VeterinarioDAO {
     }
 
     public VeterinarioDTO seleccionarVeterinarioPorCedula(int cedula) {
-        String sql = "SELECT * FROM veterinarios WHERE cedula = ?";
+        String sql = "SELECT * FROM veterinario WHERE cedula = ?";
         try (Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, cedula);
@@ -43,9 +79,8 @@ public class VeterinarioDAO {
                     return new VeterinarioDTO(
                             rs.getInt("cedula"),
                             rs.getString("nombreCompleto"),
-                            (Integer) rs.getObject("telefono"),
-                            rs.getString("nombreDeUsuario"),
-                            rs.getString("contrasenia")
+                            rs.getString("telefono"),
+                            rs.getString("nombreDeUsuario")
                     );
                 }
             }
@@ -57,7 +92,7 @@ public class VeterinarioDAO {
 
     public List<VeterinarioDTO> seleccionarTodosLosVeterinarios() {
         List<VeterinarioDTO> listaVeterinarios = new ArrayList<>();
-        String sql = "SELECT * FROM veterinarios";
+        String sql = "SELECT * FROM veterinario";
         try (Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement pstmt = connection.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
@@ -65,9 +100,8 @@ public class VeterinarioDAO {
                 listaVeterinarios.add(new VeterinarioDTO(
                         rs.getInt("cedula"),
                         rs.getString("nombreCompleto"),
-                        (Integer) rs.getObject("telefono"),
-                        rs.getString("nombreDeUsuario"),
-                        rs.getString("contrasenia")
+                        rs.getString("telefono"),
+                        rs.getString("nombreDeUsuario")
                 ));
             }
         } catch (SQLException e) {
@@ -77,24 +111,25 @@ public class VeterinarioDAO {
     }
 
     public boolean actualizarVeterinario(VeterinarioDTO veterinario) {
-        String sql = "UPDATE veterinarios SET nombreCompleto = ?, telefono = ?, nombreDeUsuario = ?, contrasenia = ? WHERE cedula = ?";
-        try (Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, veterinario.getNombreCompleto());
-            pstmt.setObject(2, veterinario.getTelefono());
-            pstmt.setString(3, veterinario.getNombreDeUsuario());
-            pstmt.setString(4, veterinario.getContrasenia());
-            pstmt.setInt(5, veterinario.getCedula());
-            int filasAfectadas = pstmt.executeUpdate();
-            return filasAfectadas > 0;
-        } catch (SQLException e) {
-            logger.error("Error al actualizar veterinario: ", e);
-            return false;
-        }
+    String sql = "UPDATE veterinario SET nombreCompleto = ?, telefono = ? WHERE cedula = ?";
+    try (Connection connection = DBConnection.getInstance().getConnection();
+         PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+        pstmt.setString(1, veterinario.getNombreCompleto());
+        pstmt.setString(2, veterinario.getTelefono());
+        pstmt.setInt(3, veterinario.getCedula()); 
+
+        int filasAfectadas = pstmt.executeUpdate();
+        return filasAfectadas > 0;
+    } catch (SQLException e) {
+        logger.error("Error al actualizar veterinario: ", e);
+        return false;
     }
+}
+
 
     public boolean eliminarVeterinario(int cedula) {
-        String sql = "DELETE FROM veterinarios WHERE cedula = ?";
+        String sql = "DELETE FROM veterinario WHERE cedula = ?";
         try (Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, cedula);

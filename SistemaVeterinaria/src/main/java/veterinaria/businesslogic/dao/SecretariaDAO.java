@@ -10,7 +10,7 @@ import veterinaria.dataaccess.DBConnection;
 public class SecretariaDAO {
 
     public int insertar(SecretariaDTO secretaria) throws SQLException {
-        String sql = "INSERT INTO secretaria (numeroDeINE, nombreCompleto, telefono, nombreDeUsuario, contrasenia) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO secretaria (numeroDeINE, nombreCompleto, telefono, nombreDeUsuario) VALUES (?, ?, ?, ?, ?)";
         int affectedRows = -1;
         try (
             Connection connection = DBConnection.getInstance().getConnection();
@@ -20,7 +20,6 @@ public class SecretariaDAO {
             stmt.setString(2, secretaria.getNombreCompleto());
             stmt.setInt(3, secretaria.getTelefono());
             stmt.setString(4, secretaria.getNombreDeUsuario());
-            stmt.setString(5, secretaria.getContrasenia());
 
             affectedRows = stmt.executeUpdate();
         }
@@ -30,7 +29,7 @@ public class SecretariaDAO {
 
     // UPDATE
     public int actualizar(SecretariaDTO secretaria) throws SQLException {
-        String sql = "UPDATE secretaria SET nombreCompleto = ?, telefono = ?, nombreDeUsuario = ?, contrasenia = ? WHERE numeroDeINE = ?";
+        String sql = "UPDATE secretaria SET nombreCompleto = ?, telefono = ?, nombreDeUsuario = ? WHERE numeroDeINE = ?";
         try (
             Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)
@@ -38,7 +37,6 @@ public class SecretariaDAO {
             stmt.setString(1, secretaria.getNombreCompleto());
             stmt.setInt(2, secretaria.getTelefono());
             stmt.setString(3, secretaria.getNombreDeUsuario());
-            stmt.setString(4, secretaria.getContrasenia());
             stmt.setInt(5, secretaria.getNumeroDeINE());
 
             return stmt.executeUpdate();
@@ -71,8 +69,7 @@ public class SecretariaDAO {
                     rs.getInt("numeroDeINE"),
                     rs.getString("nombreCompleto"),
                     rs.getInt("telefono"),
-                    rs.getString("nombreDeUsuario"),
-                    rs.getString("contrasenia")
+                    rs.getString("nombreDeUsuario")
                 );
                 lista.add(secretaria);
             }
@@ -94,8 +91,7 @@ public class SecretariaDAO {
                         rs.getInt("numeroDeINE"),
                         rs.getString("nombreCompleto"),
                         rs.getInt("telefono"),
-                        rs.getString("nombreDeUsuario"),
-                        rs.getString("contrasenia")
+                        rs.getString("nombreDeUsuario")
                     );
                 }
             }
