@@ -56,4 +56,11 @@ public class VeterinarioDTO {
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
+
+    @Override
+    public String toString() {
+        return nombreCompleto;
+    }
+    
+    
 }

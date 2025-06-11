@@ -68,4 +68,11 @@ public class MascotaDTO {
     public void setIdDuenio(int idDuenio) {
         this.idDuenio = idDuenio;
     }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
+    
+    
 }

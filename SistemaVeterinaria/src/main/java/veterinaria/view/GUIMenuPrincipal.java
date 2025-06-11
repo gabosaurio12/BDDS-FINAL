@@ -27,6 +27,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         compraBoton = new javax.swing.JButton();
         botonCerrar = new javax.swing.JButton();
+        botonAgendarCita = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,6 +59,13 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        botonAgendarCita.setText("Agendar Cita");
+        botonAgendarCita.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAgendarCitaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -65,20 +73,23 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(140, 140, 140)
+                        .addComponent(compraBoton))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(115, 115, 115)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButton2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(botonMascotas))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(140, 140, 140)
-                        .addComponent(compraBoton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(182, 182, 182)
-                        .addComponent(botonCerrar)))
+                                .addComponent(botonMascotas)))))
                 .addContainerGap(100, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(botonAgendarCita, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botonCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(154, 154, 154))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,9 +102,11 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
                     .addComponent(jButton2))
                 .addGap(28, 28, 28)
                 .addComponent(compraBoton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(botonAgendarCita)
+                .addGap(35, 35, 35)
                 .addComponent(botonCerrar)
-                .addGap(54, 54, 54))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         pack();
@@ -115,6 +128,12 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     private void botonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCerrarActionPerformed
         this.dispose();
     }//GEN-LAST:event_botonCerrarActionPerformed
+
+    private void botonAgendarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgendarCitaActionPerformed
+        GUIAgendarCita controlador = new GUIAgendarCita();
+        controlador.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_botonAgendarCitaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -153,6 +172,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonAgendarCita;
     private javax.swing.JButton botonCerrar;
     private javax.swing.JButton botonMascotas;
     private javax.swing.JButton compraBoton;
