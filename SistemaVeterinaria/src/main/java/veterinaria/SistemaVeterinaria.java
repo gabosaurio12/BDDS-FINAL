@@ -16,8 +16,8 @@ import veterinaria.view.GUIMenuPrincipal;
 public class SistemaVeterinaria {
 
     public static void main(String[] args) {
-        MascotaDTO mascota = new MascotaDTO(1,
-                "Micky", new Date(1935, 04, 22), "negro", 0.250, 1);
-        new MascotaDAO().insertar(mascota);
+        
+        GUIMenuPrincipal menuPrincipal = new GUIMenuPrincipal();
+        menuPrincipal.setVisible(true);
     }
 }

@@ -24,7 +24,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         botonMascotas = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        botonDuenos = new javax.swing.JButton();
         compraBoton = new javax.swing.JButton();
         botonCerrar = new javax.swing.JButton();
         botonAgendarCita = new javax.swing.JButton();
@@ -34,7 +34,6 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
         jLabel1.setText("Sistema Veterinaria");
         jLabel1.setPreferredSize(new java.awt.Dimension(250, 110));
-        jLabel1.setSize(new java.awt.Dimension(50, 20));
 
         botonMascotas.setText("Mascotas");
         botonMascotas.addActionListener(new java.awt.event.ActionListener() {
@@ -43,7 +42,12 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Dueños");
+        botonDuenos.setText("Dueños");
+        botonDuenos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonDuenosActionPerformed(evt);
+            }
+        });
 
         compraBoton.setText("Compra de productos");
         compraBoton.addActionListener(new java.awt.event.ActionListener() {
@@ -80,7 +84,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton2)
+                                .addComponent(botonDuenos)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(botonMascotas)))))
                 .addContainerGap(100, Short.MAX_VALUE))
@@ -99,7 +103,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonMascotas)
-                    .addComponent(jButton2))
+                    .addComponent(botonDuenos))
                 .addGap(28, 28, 28)
                 .addComponent(compraBoton)
                 .addGap(18, 18, 18)
@@ -138,45 +142,28 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    private void botonDuenosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDuenosActionPerformed
+        GUICRUDDueno controladorDueno = new GUICRUDDueno();
+        controladorDueno.llenarTablaDuenos();
+        controladorDueno.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_botonDuenosActionPerformed
+
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIMenuPrincipal().setVisible(true);
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAgendarCita;
     private javax.swing.JButton botonCerrar;
+    private javax.swing.JButton botonDuenos;
     private javax.swing.JButton botonMascotas;
     private javax.swing.JButton compraBoton;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

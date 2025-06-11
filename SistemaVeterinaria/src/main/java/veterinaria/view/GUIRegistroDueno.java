@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import veterinaria.businesslogic.dao.DireccionDuenoDAO;
 import veterinaria.businesslogic.dao.DuenoDAO;
+import veterinaria.businesslogic.dto.DireccionDuenoDTO;
 import veterinaria.businesslogic.dto.DuenoDTO;
 
 /**
@@ -15,11 +17,21 @@ import veterinaria.businesslogic.dto.DuenoDTO;
 public class GUIRegistroDueno extends javax.swing.JFrame {
 
     private static final Logger logger = LogManager.getLogger(GUIRegistroDueno.class);
+    private DuenoDTO duenoParaEditar;
+    private DireccionDuenoDTO direccionParaEditar;
+    private boolean modoEdicion = false;
     
-    DuenoDTO dtoDueno;
-    DuenoDAO daoDueno;
-    public GUIRegistroDueno() {
+    public GUIRegistroDueno(){
         initComponents();
+    }
+    
+    public GUIRegistroDueno(DuenoDTO dueno, DireccionDuenoDTO direccion) {
+        initComponents();
+        this.duenoParaEditar = dueno;
+        this.direccionParaEditar = direccion;
+        this.modoEdicion = true;
+        llenarCamposParaEdicion();
+        configurarVentanaParaEdicion();
     }
 
     /**
@@ -40,8 +52,15 @@ public class GUIRegistroDueno extends javax.swing.JFrame {
         botonGuardar = new javax.swing.JButton();
         botonCancelar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        textCalle = new javax.swing.JTextField();
+        textColonia = new javax.swing.JTextField();
+        textNumero = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(356, 375));
 
         jLabel1.setText("Nombre:");
 
@@ -66,42 +85,53 @@ public class GUIRegistroDueno extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Datos del Dueño");
 
+        jLabel5.setText("Calle");
+
+        jLabel6.setText("Colonia");
+
+        jLabel7.setText("Numero");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(botonGuardar)
-                            .addGap(90, 90, 90)
-                            .addComponent(botonCancelar))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(33, 33, 33)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING))
                                     .addGap(20, 20, 20))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addComponent(jLabel2)
                                     .addGap(18, 18, 18)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(textNombreDueno)
                                 .addComponent(textTelefonoDueno)
-                                .addComponent(textCorreoDueno, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(textCorreoDueno, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                                .addComponent(textCalle)
+                                .addComponent(textColonia)
+                                .addComponent(textNumero)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(79, 79, 79)
+                            .addComponent(jLabel4)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(112, 112, 112)
-                        .addComponent(jLabel4)))
-                .addContainerGap(51, Short.MAX_VALUE))
+                        .addComponent(botonGuardar)
+                        .addGap(59, 59, 59)
+                        .addComponent(botonCancelar)))
+                .addGap(51, 51, 51))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
+                .addGap(24, 24, 24)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -115,7 +145,19 @@ public class GUIRegistroDueno extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(textCorreoDueno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(textCalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(textColonia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(textNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonGuardar)
                     .addComponent(botonCancelar))
@@ -126,83 +168,159 @@ public class GUIRegistroDueno extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
-        daoDueno = new DuenoDAO();
-        dtoDueno = new DuenoDTO();
         
-        dtoDueno.setNombreCompleto(textNombreDueno.getText());
-        dtoDueno.setTelefono(textTelefonoDueno.getText());
-        dtoDueno.setEmail(textCorreoDueno.getText());
-        
-        if (dtoDueno.getNombreCompleto().equals("") || dtoDueno.getTelefono().equals("") || dtoDueno.getEmail().equals("")) {
+        if (textNombreDueno.getText().trim().isEmpty() || textTelefonoDueno.getText().trim().isEmpty() || 
+            textCorreoDueno.getText().trim().isEmpty() || textCalle.getText().trim().isEmpty() || 
+            textColonia.getText().trim().isEmpty() || textNumero.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Campos incompletos, llene todos los campos por favor");
-        } else {
-            try {
-            daoDueno.insertar(dtoDueno);
-            JOptionPane.showMessageDialog(this, "Dueño registrado exitosamente");
-                     
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "Error de conexión con la base de datos: " + e.getMessage(), 
-                                               "Error", JOptionPane.ERROR_MESSAGE);    
-                logger.error("Error al conectarse a la BD en GUIRegistroDueno.botonGuardarActionPerformed", e);
-
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(this, "Error al intentar registrar los datos, intentelo más tarde " + e.getMessage(), 
-                                               "Error ", JOptionPane.ERROR_MESSAGE);
-                logger.error("Error al registrar los datos en GUIRegistroDueno.botonGuardarActionPerformed", e);
-
-            } catch (Exception ex) {
-                logger.error("Error en GUIRegistroDueno.botonGuardarActionPerformed", ex);
-
-            } finally {
-                limpiarCampos();
-            }
+            return;
         }
-        
-        
-    }//GEN-LAST:event_botonGuardarActionPerformed
 
+        try {
+            if (modoEdicion) {
+                actualizarDueno();
+            } else {
+                registrarNuevoDueno();
+            }
+        } catch (SQLException ex) {
+            logger.error("Error en GUIRegistroDueno.botonGuardarActionPerformed", ex);
+            JOptionPane.showMessageDialog(this, "Error inesperado: " + ex.getMessage(), 
+                                           "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_botonGuardarActionPerformed
+    
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
-        this.dispose();
+        regresarACRUD();
     }//GEN-LAST:event_botonCancelarActionPerformed
 
     private void limpiarCampos(){
         textNombreDueno.setText("");
         textTelefonoDueno.setText("");
         textCorreoDueno.setText("");
+        textCalle.setText("");
+        textColonia.setText("");
+        textNumero.setText("");
     }
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIRegistroDueno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIRegistroDueno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIRegistroDueno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIRegistroDueno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    
+    private void llenarCamposParaEdicion() {
+        if (duenoParaEditar != null) {
+            textNombreDueno.setText(duenoParaEditar.getNombreCompleto());
+            textTelefonoDueno.setText(duenoParaEditar.getTelefono());
+            textCorreoDueno.setText(duenoParaEditar.getEmail());
         }
-        //</editor-fold>
-        //</editor-fold>
+
+        if (direccionParaEditar != null) {
+            textCalle.setText(direccionParaEditar.getCalle());
+            textColonia.setText(direccionParaEditar.getColonia());
+            textNumero.setText(direccionParaEditar.getNumero());
+        }
+    }
+    
+    private void registrarNuevoDueno() throws SQLException {
+        DuenoDAO daoDueno = new DuenoDAO();
+        DireccionDuenoDAO daoDireccion = new DireccionDuenoDAO();
+
+        DuenoDTO dtoDueno = new DuenoDTO();
+        DireccionDuenoDTO dtoDireccion = new DireccionDuenoDTO();
+
+        dtoDueno.setNombreCompleto(textNombreDueno.getText().trim());
+        dtoDueno.setTelefono(textTelefonoDueno.getText().trim());
+        dtoDueno.setEmail(textCorreoDueno.getText().trim());
+
+        int resultadoDueno = daoDueno.insertar(dtoDueno);
+
+        if (resultadoDueno > 0) {
+            int idDuenio = dtoDueno.getIdDuenio();
+
+            dtoDireccion.setCalle(textCalle.getText().trim());
+            dtoDireccion.setColonia(textColonia.getText().trim());
+            dtoDireccion.setNumero(textNumero.getText().trim());
+            dtoDireccion.setIdDuenio(idDuenio);
+
+            boolean resultadoDireccion = daoDireccion.insertarDireccion(dtoDireccion);
+
+            if (resultadoDireccion) {
+                JOptionPane.showMessageDialog(this, "Dueño y dirección registrados exitosamente");
+                regresarACRUD();
+            } else {
+                JOptionPane.showMessageDialog(this, "El dueño se registró pero hubo un problema al registrar la dirección", 
+                                         "Advertencia", JOptionPane.WARNING_MESSAGE);
+                logger.warn("Error al registrar dirección en GUIRegistroDueno.botonGuardarActionPerformed");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo registrar al dueño", 
+                                     "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void actualizarDueno() throws SQLException {
+        DuenoDAO daoDueno = new DuenoDAO();
+        DireccionDuenoDAO daoDireccion = new DireccionDuenoDAO();
+
+        duenoParaEditar.setNombreCompleto(textNombreDueno.getText().trim());
+        duenoParaEditar.setTelefono(textTelefonoDueno.getText().trim());
+        duenoParaEditar.setEmail(textCorreoDueno.getText().trim());
+
+        int resultadoDueno = daoDueno.actualizar(duenoParaEditar);
+
+        if (resultadoDueno > 0) {
+            boolean resultadoDireccion = true;
+
+            if (direccionParaEditar != null) {
+                
+                direccionParaEditar.setCalle(textCalle.getText().trim());
+                direccionParaEditar.setColonia(textColonia.getText().trim());
+                direccionParaEditar.setNumero(textNumero.getText().trim());
+
+                resultadoDireccion = daoDireccion.actualizarDireccion(direccionParaEditar);
+            } else {
+                
+                DireccionDuenoDTO nuevaDireccion = new DireccionDuenoDTO();
+                nuevaDireccion.setCalle(textCalle.getText().trim());
+                nuevaDireccion.setColonia(textColonia.getText().trim());
+                nuevaDireccion.setNumero(textNumero.getText().trim());
+                nuevaDireccion.setIdDuenio(duenoParaEditar.getIdDuenio());
+
+                resultadoDireccion = daoDireccion.insertarDireccion(nuevaDireccion);
+            }
+
+            if (resultadoDireccion) {
+                JOptionPane.showMessageDialog(this, "Dueño actualizado exitosamente");
+                regresarACRUD();
+            } else {
+                JOptionPane.showMessageDialog(this, "El dueño se actualizó pero hubo un problema con la dirección", 
+                                       "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo actualizar al dueño", 
+                                   "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void configurarVentanaParaEdicion() {
+        if (modoEdicion) {
+            setTitle("Editar Dueño");
+            jLabel4.setText("Editar Datos del Dueño");
+            botonGuardar.setText("Actualizar");
+        }
+    }
+    
+    private void regresarACRUD() {
+        GUICRUDDueno controladorDueno = new GUICRUDDueno();
+        controladorDueno.llenarTablaDuenos();
+        controladorDueno.setVisible(true);
+        this.dispose();
+    }
+    
+    public static void main(String args[]) {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIRegistroDueno().setVisible(true);
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonCancelar;
     private javax.swing.JButton botonGuardar;
@@ -210,8 +328,14 @@ public class GUIRegistroDueno extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JTextField textCalle;
+    private javax.swing.JTextField textColonia;
     private javax.swing.JTextField textCorreoDueno;
     private javax.swing.JTextField textNombreDueno;
+    private javax.swing.JTextField textNumero;
     private javax.swing.JTextField textTelefonoDueno;
     // End of variables declaration//GEN-END:variables
 }

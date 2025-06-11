@@ -1,4 +1,27 @@
 /SistemaVeterinaria/logs
 /SistemaVeterinaria/.idea
 .DS_Store
+/SistemaVeterinaria/idea
 
+.DS_Store
+Thumbs.db
+
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+nbproject/private/
+
+nbbuild/
+nbdist/
+target/
+build/
+dist/
+out/
+
+.project
+.classpath
+.settings/
+bin/

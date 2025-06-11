@@ -10,8 +10,12 @@ import veterinaria.dataaccess.DBConnection;
 
 public class DuenoDAO {
     private static final Logger logger = LogManager.getLogger(DuenoDAO.class);
+    public static final String ID_DUENIO = "idDuenio";
+    public static final String TELEFONO = "telefono";
+    public static final String NOMBRE_COMPLETO = "nombreCompleto";
+    public static final String EMAIL = "email";
     
-    public int insertar(DuenoDTO dueno) throws Exception {
+    public int insertar(DuenoDTO dueno) throws SQLException {
         String sql = "INSERT INTO dueno (telefono, nombreCompleto, email) VALUES (?, ?, ?)";
         try (
             Connection connection = DBConnection.getInstance().getConnection();
@@ -39,8 +43,8 @@ public class DuenoDAO {
         return 1;
     }
 
-    public int actualizar(DuenoDTO dueno) throws Exception {
-        String sql = "UPDATE dueno SET telefono = ?, nombreCompleto = ?, telefono = ? WHERE idDuenio = ?";
+    public int actualizar(DuenoDTO dueno) throws SQLException {
+        String sql = "UPDATE dueno SET telefono = ?, nombreCompleto = ?, email = ? WHERE idDuenio = ?";
         try (
             Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)
@@ -53,12 +57,11 @@ public class DuenoDAO {
             return stmt.executeUpdate();
         } catch (SQLException e) {
             logger.error("Error en DuenoDAO.actualizar", e);
+            throw e;
         }
-        
-        return 1;
     }
 
-    public int eliminar(int idDuenio) throws Exception {
+    public int eliminar(int idDuenio) throws SQLException {
         String sql = "DELETE FROM dueno WHERE idDuenio = ?";
         try (
             Connection connection = DBConnection.getInstance().getConnection();
@@ -73,7 +76,7 @@ public class DuenoDAO {
         return 1;
     }
 
-    public List<DuenoDTO> obtenerTodos() throws Exception {
+    public List<DuenoDTO> obtenerTodos() throws SQLException {
         String sql = "SELECT * FROM dueno";
         List<DuenoDTO> lista = new ArrayList<>();
         try (
@@ -83,10 +86,10 @@ public class DuenoDAO {
         ) {
             while (rs.next()) {
                 DuenoDTO dueno = new DuenoDTO();
-                dueno.setIdDuenio(rs.getInt("idDuenio"));
-                dueno.setTelefono(rs.getString("telefono"));
-                dueno.setNombreCompleto(rs.getString("nombreCompleto"));
-                dueno.setEmail(rs.getString("email"));
+                dueno.setIdDuenio(rs.getInt(ID_DUENIO));
+                dueno.setTelefono(rs.getString(TELEFONO));
+                dueno.setNombreCompleto(rs.getString(NOMBRE_COMPLETO));
+                dueno.setEmail(rs.getString(EMAIL));
                 lista.add(dueno);
             }
         } catch (SQLException e) {
@@ -95,7 +98,7 @@ public class DuenoDAO {
         return lista;
     }
 
-    public DuenoDTO obtenerPorId(int id) throws Exception {
+    public DuenoDTO obtenerPorId(int id) throws SQLException {
         String sql = "SELECT * FROM dueno WHERE idDuenio = ?";
         try (
             Connection connection = DBConnection.getInstance().getConnection();
@@ -105,10 +108,10 @@ public class DuenoDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     DuenoDTO dueno = new DuenoDTO();
-                    dueno.setIdDuenio(rs.getInt("idDuenio"));
-                    dueno.setTelefono(rs.getString("telefono"));
-                    dueno.setNombreCompleto(rs.getString("nombreCompleto"));
-                    dueno.setEmail(rs.getString("email"));
+                    dueno.setIdDuenio(rs.getInt(ID_DUENIO));
+                    dueno.setTelefono(rs.getString(TELEFONO));
+                    dueno.setNombreCompleto(rs.getString(NOMBRE_COMPLETO));
+                    dueno.setEmail(rs.getString(EMAIL));
                     return dueno;
                 }
             } catch (SQLException e) {
@@ -141,4 +144,6 @@ public class DuenoDAO {
         
         return id;
     }
+    
+    
 }
