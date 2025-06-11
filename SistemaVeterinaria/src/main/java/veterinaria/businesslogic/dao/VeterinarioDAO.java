@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,6 @@ public class VeterinarioDAO {
                     
                     return String.format("VET-%03d", siguienteNumero);
                 } else {
-                    // Si no hay registros, empezar con VET-001
                     return "VET-001";
                 }
             }
@@ -42,32 +43,44 @@ public class VeterinarioDAO {
     }
 
     public boolean insertarVeterinario(VeterinarioDTO veterinario) {
-        // Generar automáticamente el nombre de usuario
         String nombreUsuarioGenerado = generarNombreDeUsuario();
-        
-        String sql = "INSERT INTO veterinario (cedula, nombreCompleto, telefono, nombreDeUsuario) VALUES (?, ?, ?, ?)";
+        String sqlAgenda = "INSERT INTO Agenda () VALUES ()";
+        String sqlInsert = "INSERT INTO veterinario (cedula, nombreCompleto, telefono, nombreDeUsuario, agendaID) VALUES (?, ?, ?, ?, ?)";
+
         try (Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            
-            pstmt.setInt(1, veterinario.getCedula());
-            pstmt.setString(2, veterinario.getNombreCompleto());
-            pstmt.setString(3, veterinario.getTelefono()); 
-            pstmt.setString(4, nombreUsuarioGenerado);
-            
-            int filasAfectadas = pstmt.executeUpdate();
-            
-            if (filasAfectadas > 0) {
-                logger.info("Veterinario insertado exitosamente con nombre de usuario: {}", nombreUsuarioGenerado);
-                veterinario.setNombreDeUsuario(nombreUsuarioGenerado);
-                return true;
+             PreparedStatement pstmtAgenda = connection.prepareStatement(sqlAgenda, Statement.RETURN_GENERATED_KEYS)) {
+
+            pstmtAgenda.executeUpdate();
+            ResultSet generatedKeys = pstmtAgenda.getGeneratedKeys();
+            int agendaId = -1;
+            if (generatedKeys.next()) {
+                agendaId = generatedKeys.getInt(1);
+            } else {
+                logger.error("Error al insertar veterinario: No se pudo obtener el ID de la agenda.");
+                return false;
             }
-            return false;
-            
+
+            try (PreparedStatement pstmtInsert = connection.prepareStatement(sqlInsert)) {
+                pstmtInsert.setInt(1, veterinario.getCedula());
+                pstmtInsert.setString(2, veterinario.getNombreCompleto());
+                pstmtInsert.setString(3, veterinario.getTelefono());
+                pstmtInsert.setString(4, nombreUsuarioGenerado);
+                pstmtInsert.setInt(5, agendaId);
+
+                int filasAfectadas = pstmtInsert.executeUpdate();
+
+                if (filasAfectadas > 0) {
+                    logger.info("Veterinario insertado exitosamente con nombre de usuario: {}", nombreUsuarioGenerado);
+                    veterinario.setNombreDeUsuario(nombreUsuarioGenerado);
+                    return true;
+                }
+            }
         } catch (SQLException e) {
             logger.error("Error al insertar veterinario: ", e);
-            return false;
         }
+        return false;
     }
+
 
     public VeterinarioDTO seleccionarVeterinarioPorCedula(int cedula) {
         String sql = "SELECT * FROM veterinario WHERE cedula = ?";
@@ -80,7 +93,8 @@ public class VeterinarioDAO {
                             rs.getInt("cedula"),
                             rs.getString("nombreCompleto"),
                             rs.getString("telefono"),
-                            rs.getString("nombreDeUsuario")
+                            rs.getString("nombreDeUsuario"),
+                            rs.getInt("idAgenda")
                     );
                 }
             }
@@ -101,8 +115,9 @@ public class VeterinarioDAO {
                         rs.getInt("cedula"),
                         rs.getString("nombreCompleto"),
                         rs.getString("telefono"),
-                        rs.getString("nombreDeUsuario")
-                ));
+                        rs.getString("nombreDeUsuario"),
+                        rs.getInt("agendaId"))
+                );
             }
         } catch (SQLException e) {
             logger.error("Error al seleccionar todos los veterinarios: ", e);

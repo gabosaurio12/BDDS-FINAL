@@ -168,7 +168,6 @@ public class GUIRegistroDueno extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
-        
         if (textNombreDueno.getText().trim().isEmpty() || textTelefonoDueno.getText().trim().isEmpty() || 
             textCorreoDueno.getText().trim().isEmpty() || textCalle.getText().trim().isEmpty() || 
             textColonia.getText().trim().isEmpty() || textNumero.getText().trim().isEmpty()) {

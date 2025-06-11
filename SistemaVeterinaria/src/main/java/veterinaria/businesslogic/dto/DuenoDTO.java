@@ -33,8 +33,5 @@ public class DuenoDTO {
     @Override
     public String toString() {
         return nombreCompleto;
-    }
-    
-    
-    
+    }   
 }

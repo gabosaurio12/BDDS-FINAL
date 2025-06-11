@@ -5,14 +5,23 @@ public class VeterinarioDTO {
     private String nombreCompleto;
     private String telefono;
     private String nombreDeUsuario;
-
+    private int agenda;
     public VeterinarioDTO() {}
+
 
     public VeterinarioDTO(int cedula, String nombreCompleto, String telefono, String nombreDeUsuario) {
         this.cedula = cedula;
         this.nombreCompleto = nombreCompleto;
         this.telefono = telefono;
         this.nombreDeUsuario = nombreDeUsuario;
+    }
+
+    public VeterinarioDTO(int cedula, String nombreCompleto, String telefono, String nombreDeUsuario, int agenda) {
+        this.cedula = cedula;
+        this.nombreCompleto = nombreCompleto;
+        this.telefono = telefono;
+        this.nombreDeUsuario = nombreDeUsuario;
+        this.agenda = agenda;
     }
 
     public int getCedula() {
@@ -51,6 +60,12 @@ public class VeterinarioDTO {
     public String toString() {
         return nombreCompleto;
     }
-    
-    
+
+    public int getAgenda() {
+        return agenda;
+    }
+
+    public void setAgenda(int agenda) {
+        this.agenda = agenda;
+    }
 }

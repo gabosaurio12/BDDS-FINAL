@@ -217,7 +217,6 @@ public class GUICRUDVeterinario extends javax.swing.JFrame {
             return;
         }
 
-        // Obtener la cédula del veterinario seleccionado
         int cedula = (Integer) tablaVeterinarios.getValueAt(filaSeleccionada, 0);
 
         try {
