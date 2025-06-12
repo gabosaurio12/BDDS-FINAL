@@ -4,6 +4,7 @@
  */
 package veterinaria.view;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -50,6 +51,7 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
         spinnerAno = new javax.swing.JSpinner();
         botonBuscarFecha = new javax.swing.JButton();
         botonBuscarMes = new javax.swing.JButton();
+        botonRecargar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -108,6 +110,13 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
             }
         });
 
+        botonRecargar.setText("Recargar");
+        botonRecargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonRecargarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -119,7 +128,6 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(36, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(botonBuscarMes)
                     .addComponent(botonCerrar)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -132,9 +140,16 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
                             .addGap(18, 18, 18)
                             .addComponent(spinnerMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(spinnerAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(botonBuscarFecha))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(spinnerAno)
+                                .addComponent(botonRecargar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(botonBuscarFecha))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(31, 31, 31)
+                                    .addComponent(botonBuscarMes))))))
                 .addGap(34, 34, 34))
         );
         layout.setVerticalGroup(
@@ -143,7 +158,9 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                .addComponent(botonBuscarMes)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonBuscarMes)
+                    .addComponent(botonRecargar))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textBusquedaVet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -267,14 +284,12 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
 
     private void botonBuscarMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarMesActionPerformed
         int mesInt = (Integer) spinnerMes.getValue();
-        
-        String mes = mesInt < 10 ? "0" + mesInt : String.valueOf(mesInt);
-        
+                
         List<ConsultarCitaDTO> consultas = new CitaDAO().obtenerCitasFiltradas();
         List<ConsultarCitaDTO> consultasBuscadas = new ArrayList<>();
         
         for (ConsultarCitaDTO i : consultas) {
-            if (i.getFecha().toString().toLowerCase().contains(.toLowerCase())) {
+            if (i.getFecha().getMonth() + 1 == mesInt) {
                 consultasBuscadas.add(i);
             }
         }
@@ -298,6 +313,10 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
         
         tablaConsultas.setModel(modelo);
     }//GEN-LAST:event_botonBuscarMesActionPerformed
+
+    private void botonRecargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRecargarActionPerformed
+        cargarTabla();
+    }//GEN-LAST:event_botonRecargarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -339,6 +358,7 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
     private javax.swing.JButton botonBuscarFecha;
     private javax.swing.JButton botonBuscarMes;
     private javax.swing.JButton botonCerrar;
+    private javax.swing.JButton botonRecargar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner spinnerAno;

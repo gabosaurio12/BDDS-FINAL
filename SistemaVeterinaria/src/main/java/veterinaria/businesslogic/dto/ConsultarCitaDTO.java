@@ -10,6 +10,7 @@ public class ConsultarCitaDTO {
     private String tratamiento;
     private String estadoCita;
     private Date fecha;
+    private int idCita;
 
     public ConsultarCitaDTO() {
     }
@@ -68,8 +69,15 @@ public class ConsultarCitaDTO {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }  
+
+    public int getIdCita() {
+        return idCita;
     }
-    
+
+    public void setIdCita(int idCita) {
+        this.idCita = idCita;
+    }
     
     
 

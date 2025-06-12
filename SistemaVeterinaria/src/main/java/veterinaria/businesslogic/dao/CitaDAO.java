@@ -45,7 +45,8 @@ public class CitaDAO {
     public boolean actualizarCita(CitaDTO cita) {
         String sql = "UPDATE cita SET tratamiento = ?, motivoDeConsulta = ?, "
                 + "estadoDeCita = ?, idMascota = ?, idDueno = ?, "
-                + "idAgenda = ?, idFechaHora WHERE idCita = ?";
+                + "idAgenda = ?, idFechaHora, "
+                + "idEnfemedad = ? WHERE idCita = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, cita.getTratamiento());
             stmt.setString(2, cita.getMotivoDeConsulta());
@@ -53,7 +54,8 @@ public class CitaDAO {
             stmt.setInt(4, cita.getIdMascota());
             stmt.setInt(5, cita.getIdDueno());
             stmt.setInt(6, cita.getIdAgenda());
-            stmt.setInt(7, cita.getIdFechaHora());
+            stmt.setInt(7, cita.getIdEnfermedad());
+            stmt.setInt(8, cita.getIdFechaHora());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -87,7 +89,8 @@ public class CitaDAO {
                         rs.getInt("idMascota"),
                         rs.getInt("idDueno"),
                         rs.getInt("idAgenda"),
-                        rs.getInt("idFechaHora")
+                        rs.getInt("idFechaHora"),
+                        rs.getInt("idEnfermedad")
                 );
             }
         } catch (SQLException e) {
@@ -110,7 +113,8 @@ public class CitaDAO {
                         rs.getInt("idMascota"),
                         rs.getInt("idDueno"),
                         rs.getInt("idAgenda"),
-                        rs.getInt("idFechaHora")
+                        rs.getInt("idFechaHora"),
+                        rs.getInt("idEnfermedad")
                 ));
             }
         } catch (SQLException e) {
@@ -139,6 +143,7 @@ public class CitaDAO {
                 cita.setIdMascota(result.getInt("idMascota"));
                 cita.setMotivoDeConsulta(result.getString("motivoDeConsulta"));
                 cita.setTratamiento(result.getString("tratamiento"));
+                cita.setIdEnfermedad(result.getInt("idEnfermedad"));
                 
                 citas.add(cita);
             }
@@ -155,10 +160,11 @@ public class CitaDAO {
                 "m.nombre AS nombreMascota, " +
                 "d.nombreCompleto AS nombreDueno, " +
                 "c.motivoDeConsulta, " +
+                "c.idCita" +
                 "c.tratamiento, " +
                 "c.estadoDeCita, " +
                 "f.fecha, " +
-                "h.hora " +
+                "h.hora, " +
                 "FROM Cita c " +
                 "JOIN Mascota m ON c.idMascota = m.idMascota " +
                 "JOIN Dueno d ON m.idDuenio = d.idDuenio " +
@@ -179,6 +185,7 @@ public class CitaDAO {
                 consulta.setNombreVeterinario(result.getString("nombreVeterinario"));
                 consulta.setTratamiento(result.getString("tratamiento"));
                 consulta.setFecha(result.getDate("fecha"));
+                consulta.setIdCita(result.getInt("idCita"));
                 
                 consultas.add(consulta);
             }

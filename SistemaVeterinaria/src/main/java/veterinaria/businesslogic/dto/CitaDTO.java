@@ -9,10 +9,11 @@ public class CitaDTO {
     private int idDueno;
     private int idAgenda;
     private int idFechaHora;
+    private int idEnfermedad;
 
     public CitaDTO() {}
 
-    public CitaDTO(int idCita, String tratamiento, String motivoDeConsulta, String estadoDeCita, int idMascota, int idDueno, int idAgenda, int idFechaHora) {
+    public CitaDTO(int idCita, String tratamiento, String motivoDeConsulta, String estadoDeCita, int idMascota, int idDueno, int idAgenda, int idFechaHora, int idEnfermedad) {
         this.idCita = idCita;
         this.tratamiento = tratamiento;
         this.motivoDeConsulta = motivoDeConsulta;
@@ -21,7 +22,10 @@ public class CitaDTO {
         this.idDueno = idDueno;
         this.idAgenda = idAgenda;
         this.idFechaHora = idFechaHora;
+        this.idEnfermedad = idEnfermedad;
     }
+    
+    
 
     public int getIdCita() {
         return idCita;
@@ -87,5 +91,11 @@ public class CitaDTO {
         this.idFechaHora = idFechaHora;
     }
 
-    
+    public int getIdEnfermedad() {
+        return idEnfermedad;
+    }
+
+    public void setIdEnfermedad(int idEnfermedad) {
+        this.idEnfermedad = idEnfermedad;
+    }    
 }

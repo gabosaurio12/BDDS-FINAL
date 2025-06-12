@@ -36,4 +36,9 @@ public class EnfermedadDTO {
     public void setClasificacionDeEspecie(String clasificacionDeEspecie) {
         this.clasificacionDeEspecie = clasificacionDeEspecie;
     }
+    
+    @Override
+    public String toString() {
+        return nombreDeEnfermedad;
+    }
 }
