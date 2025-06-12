@@ -283,6 +283,7 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
     }//GEN-LAST:event_botonBuscarFechaActionPerformed
 
     private void botonBuscarMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarMesActionPerformed
+<<<<<<< HEAD
         int mesInt = (Integer) spinnerMes.getValue();
                 
         List<ConsultarCitaDTO> consultas = new CitaDAO().obtenerCitasFiltradas();

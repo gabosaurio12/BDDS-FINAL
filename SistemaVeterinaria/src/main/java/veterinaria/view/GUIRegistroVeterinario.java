@@ -18,16 +18,18 @@ public class GUIRegistroVeterinario extends javax.swing.JFrame {
 
     private boolean modoEdicion = false;
     private int cedulaOriginal = 0;
+    private String nombreDeUsuarioOriginal = "";
     private static final Logger logger = LogManager.getLogger(GUIRegistroVeterinario.class);
 
     public GUIRegistroVeterinario() {
         initComponents();
     }
     
-    public GUIRegistroVeterinario(int cedula) {
+    public GUIRegistroVeterinario(int cedula, String nombreDeUsuarioOriginal) {
         initComponents();
         this.modoEdicion = true;
         this.cedulaOriginal = cedula;
+        this.nombreDeUsuarioOriginal = nombreDeUsuarioOriginal;
         configurarVentana();
         cargarDatosVeterinario(cedula);
     }
@@ -283,53 +285,64 @@ public class GUIRegistroVeterinario extends javax.swing.JFrame {
     }
 }
 
-// MÉTODO PARA VALIDAR CAMPOS
-private boolean validarCampos() {
-    // Validar cédula (solo en modo registro)
-    if (!modoEdicion) {
-        if (textCedula.getText().trim().isEmpty()) {
-            mostrarError("La cédula es obligatoria.");
-            textCedula.requestFocus();
-            return false;
-        }
-        
-        try {
-            int cedula = Integer.parseInt(textCedula.getText().trim());
-            if (cedula <= 0) {
-                mostrarError("La cédula debe ser un número positivo.");
+    private boolean validarCampos() {
+    
+        if (!modoEdicion) {
+            if (textCedula.getText().trim().isEmpty()) {
+                mostrarError("La cédula es obligatoria.");
                 textCedula.requestFocus();
                 return false;
             }
-        } catch (NumberFormatException e) {
-            mostrarError("La cédula debe ser un número válido.");
-            textCedula.requestFocus();
+
+            try {
+                long cedulaLong = Long.parseLong(textCedula.getText().trim());
+
+                if (cedulaLong <= 0) {
+                    mostrarError("Cedula no válida");
+                    textCedula.requestFocus();
+                    return false;
+                }
+
+                if (cedulaLong > Integer.MAX_VALUE) {
+                    mostrarError("Cédula no válida");
+                    textCedula.requestFocus();
+                    return false;
+                }
+
+                int cedula = (int) cedulaLong;
+
+            }catch (NumberFormatException e) {
+                mostrarError("La cédula debe contener solo números.");
+                textCedula.requestFocus();
+                return false;
+            }
+        }
+    
+        if (textNombre.getText().trim().isEmpty()) {
+            mostrarError("El nombre completo es obligatorio.");
+            textNombre.requestFocus();
             return false;
         }
-    }
+        
+        if (textNombre.getText().trim().length() < 3 ){
+            mostrarError ("el nombre debe tener al menos 3 letras");
+            textNombre.requestFocus();
+            return false;
+        }
+        if (textTelefono.getText().trim().isEmpty()) {
+            mostrarError("El teléfono es obligatorio.");
+            textTelefono.requestFocus();
+            return false;
+        }
     
-    // Validar nombre
-    if (textNombre.getText().trim().isEmpty()) {
-        mostrarError("El nombre completo es obligatorio.");
-        textNombre.requestFocus();
-        return false;
-    }
-    
-    // Validar teléfono
-    if (textTelefono.getText().trim().isEmpty()) {
-        mostrarError("El teléfono es obligatorio.");
-        textTelefono.requestFocus();
-        return false;
-    }
-    
-    // Validación básica de teléfono (solo números y guiones)
-    String telefono = textTelefono.getText().trim();
-    if (!telefono.matches("[0-9\\-\\s\\(\\)\\+]+")) {
-        mostrarError("El teléfono contiene caracteres no válidos.");
-        textTelefono.requestFocus();
-        return false;
-    }
-    
-    return true;
+        String telefono = textTelefono.getText().trim();
+        if (!telefono.matches("[0-9\\s\\(\\)\\+\\-]{10,15}")) {
+            mostrarError("El teléfono no tiene un formato válido.");
+            textTelefono.requestFocus();
+            return false;
+        }
+
+        return true;
 
     }//GEN-LAST:event_botonGuardarActionPerformed
 
@@ -389,26 +402,22 @@ private boolean validarCampos() {
             String nombre = textNombre.getText().trim();
             String telefono = textTelefono.getText().trim();
 
-            VeterinarioDTO veterinario = new VeterinarioDTO(cedulaOriginal, nombre, telefono, null);
+            VeterinarioDTO veterinario = new VeterinarioDTO(cedulaOriginal, nombre, telefono, nombreDeUsuarioOriginal, null);
 
             VeterinarioDAO veterinarioDAO = new VeterinarioDAO();
             boolean veterinarioActualizado = veterinarioDAO.actualizarVeterinario(veterinario);
 
             if (veterinarioActualizado) {
                 actualizarDireccion(cedulaOriginal);
-
                 JOptionPane.showMessageDialog(this, 
                     "Veterinario actualizado exitosamente.", 
                     "Éxito", 
                     JOptionPane.INFORMATION_MESSAGE);
-
                 logger.info("Veterinario actualizado exitosamente. Cédula: {}", cedulaOriginal);
                 regresarAVentanaAnterior();
-
             } else {
                 mostrarError("No se pudo actualizar el veterinario.");
             }
-
         } catch (SQLException e) {
             logger.error("Error al actualizar veterinario: ", e);
             mostrarError("Error en la base de datos: " + e.getMessage());
@@ -446,33 +455,32 @@ private boolean validarCampos() {
             String nombre = textNombre.getText().trim();
             String telefono = textTelefono.getText().trim();
 
-            // Crear DTO del veterinario
-            VeterinarioDTO veterinario = new VeterinarioDTO(cedula, nombre, telefono, null);
+            String contrasenia = generarContrasenia(nombre, telefono);
 
-            // Insertar veterinario
+            VeterinarioDTO veterinario = new VeterinarioDTO(cedula, nombre, telefono, null, contrasenia);
+
             VeterinarioDAO veterinarioDAO = new VeterinarioDAO();
             boolean veterinarioInsertado = veterinarioDAO.insertarVeterinario(veterinario);
 
             if (veterinarioInsertado) {
-                // Si hay datos de dirección, insertarla
                 if (hayDatosDireccion()) {
                     insertarDireccion(cedula);
                 }
-
                 JOptionPane.showMessageDialog(this, 
-                    "Veterinario registrado exitosamente.\nNombre de usuario generado: " + veterinario.getNombreDeUsuario(), 
+                    "Veterinario registrado exitosamente.\n" +
+                    "Nombre de usuario generado: " + veterinario.getNombreDeUsuario() + "\n" +
+                    "Contraseña generada: " + contrasenia, 
                     "Éxito", 
                     JOptionPane.INFORMATION_MESSAGE);
-
                 logger.info("Veterinario registrado exitosamente. Cédula: {}, Usuario: {}", 
                     cedula, veterinario.getNombreDeUsuario());
-
                 regresarAVentanaAnterior();
-
             } else {
                 mostrarError("No se pudo registrar el veterinario. Verifique que la cédula no esté duplicada.");
             }
-
+        } catch (NumberFormatException e) {
+            mostrarError("La cédula debe ser un número válido.");
+            textCedula.requestFocus();
         } catch (SQLException e) {
             logger.error("Error al registrar veterinario: ", e);
             if (e.getMessage().contains("Duplicate entry")) {
@@ -481,6 +489,17 @@ private boolean validarCampos() {
                 mostrarError("Error en la base de datos: " + e.getMessage());
             }
         }
+    }
+
+    private String generarContrasenia(String nombre, String telefono) {
+        String telefonoLimpio = telefono.replaceAll("[^0-9]", "");
+
+        String nombreLimpio = nombre.replaceAll("\\s+", "");
+        String prefijo = nombreLimpio.length() >= 3 ? nombreLimpio.substring(0, 3) : nombreLimpio;
+
+        String sufijo = telefonoLimpio.length() >= 4 ? telefonoLimpio.substring(0, 4) : telefonoLimpio;
+
+        return prefijo.toLowerCase() + sufijo;
     }
     
     private void actualizarDireccion(int cedula) throws SQLException {
