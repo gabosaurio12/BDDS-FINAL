@@ -218,10 +218,11 @@ public class GUICRUDVeterinario extends javax.swing.JFrame {
         }
 
         int cedula = (Integer) tablaVeterinarios.getValueAt(filaSeleccionada, 0);
+        String nombreUsuario = (String)tablaVeterinarios.getValueAt(filaSeleccionada, 3);
 
         try {
 
-            GUIRegistroVeterinario ventanaEdicion = new GUIRegistroVeterinario(cedula);
+            GUIRegistroVeterinario ventanaEdicion = new GUIRegistroVeterinario(cedula,nombreUsuario);
             ventanaEdicion.setVisible(true);
             this.dispose();
 
