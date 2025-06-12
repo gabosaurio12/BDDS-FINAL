@@ -210,7 +210,10 @@ public class GUIRegistroProducto extends javax.swing.JFrame {
     }//GEN-LAST:event_botonRegistrarActionPerformed
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
-        // TODO add your handling code here:
+        GUICRUDProducto controladorProductos = new GUICRUDProducto();
+        controladorProductos.llenarTablaProductos();
+        controladorProductos.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_botonCancelarActionPerformed
 
     private void configurarVentana() {
