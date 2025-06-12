@@ -183,6 +183,7 @@ public class GUIRegistroProducto extends javax.swing.JFrame {
                 
                 if (exito) {
                     JOptionPane.showMessageDialog(this, "Producto actualizado exitosamente.");
+                    cerrarLaVentana();
                 } else {
                     JOptionPane.showMessageDialog(this, "Error al actualizar el producto.");
                     return;
@@ -210,10 +211,7 @@ public class GUIRegistroProducto extends javax.swing.JFrame {
     }//GEN-LAST:event_botonRegistrarActionPerformed
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
-        GUICRUDProducto controladorProductos = new GUICRUDProducto();
-        controladorProductos.llenarTablaProductos();
-        controladorProductos.setVisible(true);
-        this.dispose();
+        cerrarLaVentana();
     }//GEN-LAST:event_botonCancelarActionPerformed
 
     private void configurarVentana() {
@@ -307,6 +305,13 @@ public class GUIRegistroProducto extends javax.swing.JFrame {
         textPrecio.setText("");
         textTipo.setText("");
         textEspecie.setText("");
+    }
+    
+    private void cerrarLaVentana(){
+        GUICRUDProducto controladorProductos = new GUICRUDProducto();
+        controladorProductos.llenarTablaProductos();
+        controladorProductos.setVisible(true);
+        this.dispose();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonCancelar;
