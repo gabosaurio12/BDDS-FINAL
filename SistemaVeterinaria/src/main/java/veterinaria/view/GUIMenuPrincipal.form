@@ -30,23 +30,15 @@
                   <Component id="botonDuenos" alignment="0" max="32767" attributes="0"/>
                   <Component id="botonMascotas" alignment="0" max="32767" attributes="0"/>
               </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="botonAgendarCita" min="-2" pref="119" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="botonCerrar" max="32767" attributes="0"/>
-                          <Component id="compraBoton" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace pref="49" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="botonConsultarCitas1" max="32767" attributes="0"/>
-                          <Component id="botonConsultarCitas" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
+              <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="botonCerrar" max="32767" attributes="0"/>
+                  <Component id="compraBoton" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace pref="49" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="botonConsultarCitas" max="32767" attributes="0"/>
+                  <Component id="botonAgendarCita" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
           </Group>
@@ -74,10 +66,7 @@
                   <Component id="botonConsultarCitas" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="botonMascotas" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="botonConsultarCitas1" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="botonMascotas" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="187" max="32767" attributes="0"/>
               <Component id="botonCerrar" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
@@ -151,14 +140,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonVeterinariosActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="botonConsultarCitas1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Atender Cita"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonConsultarCitas1ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

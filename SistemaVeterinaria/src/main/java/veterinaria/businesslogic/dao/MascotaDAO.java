@@ -12,7 +12,7 @@ public class MascotaDAO {
     private static final Logger logger = LogManager.getLogger(MascotaDAO.class);
     
     public int insertar(MascotaDTO mascota) {
-        String sql = "INSERT INTO mascota (nombre, fechaDeNacimiento, color, peso, idDuenio) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO mascota (nombre, fechaDeNacimiento, color, peso, idDuenio, especie) VALUES (?, ?, ?, ?, ?, ?)";
         try (
             Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
@@ -22,6 +22,7 @@ public class MascotaDAO {
             stmt.setString(3, mascota.getColor());
             stmt.setDouble(4, mascota.getPeso());
             stmt.setInt(5, mascota.getIdDuenio());
+            stmt.setString(6, mascota.getEspecie());
 
             int filas = stmt.executeUpdate();
             try (ResultSet rs = stmt.getGeneratedKeys()) {
@@ -40,7 +41,7 @@ public class MascotaDAO {
     }
 
     public int actualizar(MascotaDTO mascota) {
-        String sql = "UPDATE mascota SET nombre = ?, fechaDeNacimiento = ?, color = ?, peso = ?, idDuenio = ? WHERE idMascota = ?";
+        String sql = "UPDATE mascota SET nombre = ?, fechaDeNacimiento = ?, color = ?, peso = ?, idDuenio = ?, especie = ? WHERE idMascota = ?";
         try (
             Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)
@@ -50,7 +51,8 @@ public class MascotaDAO {
             stmt.setString(3, mascota.getColor());
             stmt.setDouble(4, mascota.getPeso());
             stmt.setInt(5, mascota.getIdDuenio());
-            stmt.setInt(6, mascota.getIdMascota());
+            stmt.setString(6, mascota.getEspecie());
+            stmt.setInt(7, mascota.getIdMascota());
 
             return stmt.executeUpdate();
         } catch (SQLException e) {
@@ -90,6 +92,7 @@ public class MascotaDAO {
                 mascota.setColor(rs.getString("color"));
                 mascota.setPeso(rs.getDouble("peso"));
                 mascota.setIdDuenio(rs.getInt("idDuenio"));
+                mascota.setEspecie(rs.getString("especie"));
                 lista.add(mascota);
             }
         } catch (SQLException e) {
@@ -114,6 +117,7 @@ public class MascotaDAO {
                     mascota.setColor(rs.getString("color"));
                     mascota.setPeso(rs.getDouble("peso"));
                     mascota.setIdDuenio(rs.getInt("idDuenio"));
+                    mascota.setEspecie("especie");
                     return mascota;
                 }
             } catch (SQLException e) {

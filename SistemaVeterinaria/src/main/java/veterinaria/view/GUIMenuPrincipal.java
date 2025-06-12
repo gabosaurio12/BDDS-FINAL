@@ -30,7 +30,6 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         botonAgendarCita = new javax.swing.JButton();
         botonConsultarCitas = new javax.swing.JButton();
         botonVeterinarios = new javax.swing.JButton();
-        botonConsultarCitas1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,13 +86,6 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
             }
         });
 
-        botonConsultarCitas1.setText("Atender Cita");
-        botonConsultarCitas1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonConsultarCitas1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -104,19 +96,14 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
                     .addComponent(botonVeterinarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(botonDuenos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(botonMascotas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(botonAgendarCita, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(botonCerrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(compraBoton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(botonConsultarCitas1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(botonConsultarCitas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(55, 55, 55)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(botonCerrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(compraBoton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(botonConsultarCitas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botonAgendarCita, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(31, 31, 31))
             .addGroup(layout.createSequentialGroup()
                 .addGap(165, 165, 165)
@@ -138,9 +125,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
                     .addComponent(compraBoton)
                     .addComponent(botonConsultarCitas))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonMascotas)
-                    .addComponent(botonConsultarCitas1))
+                .addComponent(botonMascotas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
                 .addComponent(botonCerrar)
                 .addGap(55, 55, 55))
@@ -185,6 +170,7 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     private void botonConsultarCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConsultarCitasActionPerformed
         GUIConsultarCitas controlador = new GUIConsultarCitas();
         controlador.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_botonConsultarCitasActionPerformed
 
     private void botonVeterinariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVeterinariosActionPerformed
@@ -193,10 +179,6 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
         controladorVeterinario.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_botonVeterinariosActionPerformed
-
-    private void botonConsultarCitas1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonConsultarCitas1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botonConsultarCitas1ActionPerformed
 
     public static void main(String args[]) {
 
@@ -212,7 +194,6 @@ public class GUIMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton botonAgendarCita;
     private javax.swing.JButton botonCerrar;
     private javax.swing.JButton botonConsultarCitas;
-    private javax.swing.JButton botonConsultarCitas1;
     private javax.swing.JButton botonDuenos;
     private javax.swing.JButton botonMascotas;
     private javax.swing.JButton botonVeterinarios;

@@ -16,7 +16,8 @@ public class DuenoDAO {
     public static final String EMAIL = "email";
     
     public int insertar(DuenoDTO dueno) throws SQLException {
-        String sql = "INSERT INTO dueno (telefono, nombreCompleto, email, ine) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO dueno (telefono, nombreCompleto, email, ine, "
+                + "username, password) VALUES (?, ?, ?, ?, ?, SHA2(?, 256))";
         try (
             Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
@@ -25,6 +26,9 @@ public class DuenoDAO {
             stmt.setString(2, dueno.getNombreCompleto());
             stmt.setString(3, dueno.getEmail());
             stmt.setString(4, dueno.getIne());
+            String[] username = dueno.getEmail().split("@");
+            stmt.setString(5, username[0]);
+            stmt.setString(6, dueno.getTelefono());
 
             int filasAfectadas = stmt.executeUpdate();
 
@@ -109,10 +113,14 @@ public class DuenoDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     DuenoDTO dueno = new DuenoDTO();
-                    dueno.setIdDuenio(rs.getInt(ID_DUENIO));
-                    dueno.setTelefono(rs.getString(TELEFONO));
-                    dueno.setNombreCompleto(rs.getString(NOMBRE_COMPLETO));
-                    dueno.setEmail(rs.getString(EMAIL));
+                    dueno.setIdDuenio(rs.getInt("idDuenio"));
+                    dueno.setTelefono(rs.getString("telefono"));
+                    dueno.setNombreCompleto(rs.getString("nombreCompleto"));
+                    dueno.setEmail(rs.getString("email"));
+                    dueno.setIne(rs.getString("ine"));
+                    dueno.setUsername("username");
+                    dueno.setPassword("password");
+                    
                     return dueno;
                 }
             } catch (SQLException e) {

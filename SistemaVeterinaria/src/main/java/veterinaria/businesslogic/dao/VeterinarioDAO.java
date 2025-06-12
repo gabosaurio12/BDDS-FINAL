@@ -19,14 +19,14 @@ public class VeterinarioDAO {
     private static final Logger logger = LogManager.getLogger(VeterinarioDAO.class);
     
     private String generarNombreDeUsuario() {
-        String sql = "SELECT nombreDeUsuario FROM veterinario WHERE nombreDeUsuario LIKE 'VET-%' ORDER BY CAST(SUBSTRING(nombreDeUsuario, 5) AS UNSIGNED) DESC LIMIT 1";
+        String sql = "SELECT username FROM veterinario WHERE username LIKE 'VET-%' ORDER BY CAST(SUBSTRING(nombreDeUsuario, 5) AS UNSIGNED) DESC LIMIT 1";
         
         try (Connection connection = DBConnection.getInstance().getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
             
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    String ultimoNombre = rs.getString("nombreDeUsuario");
+                    String ultimoNombre = rs.getString("username");
                     String numeroStr = ultimoNombre.substring(4); 
                     int ultimoNumero = Integer.parseInt(numeroStr);
                     int siguienteNumero = ultimoNumero + 1;
@@ -45,7 +45,7 @@ public class VeterinarioDAO {
     public boolean insertarVeterinario(VeterinarioDTO veterinario) {
         String nombreUsuarioGenerado = generarNombreDeUsuario();
         String sqlAgenda = "INSERT INTO Agenda () VALUES ()";
-        String sqlInsert = "INSERT INTO veterinario (cedula, nombreCompleto, telefono, nombreDeUsuario, contrasenia, agendaID) VALUES (?, ?, ?, ?, SHA2(?, 256), ?)";
+        String sqlInsert = "INSERT INTO veterinario (cedula, nombreCompleto, telefono, username, password, agendaID) VALUES (?, ?, ?, ?, SHA2(?, 256), ?)";
 
         try (Connection connection = DBConnection.getInstance().getConnection();
              PreparedStatement pstmtAgenda = connection.prepareStatement(sqlAgenda, Statement.RETURN_GENERATED_KEYS)) {
@@ -94,7 +94,7 @@ public class VeterinarioDAO {
                             rs.getInt("cedula"),
                             rs.getString("nombreCompleto"),
                             rs.getString("telefono"),
-                            rs.getString("nombreDeUsuario"),
+                            rs.getString("username"),
                             rs.getInt("idAgenda")
                     );
                 }
@@ -116,7 +116,7 @@ public class VeterinarioDAO {
                         rs.getInt("cedula"),
                         rs.getString("nombreCompleto"),
                         rs.getString("telefono"),
-                        rs.getString("nombreDeUsuario"),
+                        rs.getString("username"),
                         rs.getInt("agendaId"))
                 );
             }
@@ -157,7 +157,7 @@ public class VeterinarioDAO {
         }
     }
     public VeterinarioDTO verificarLogin(String nombreDeUsuario, String contrasenia) {
-        String sql = "SELECT cedula, nombreCompleto, telefono, nombreDeUsuario, agendaID FROM veterinario WHERE nombreDeUsuario = ? AND contrasenia = SHA2(?, 256)";
+        String sql = "SELECT cedula, nombreCompleto, telefono, username, agendaID FROM veterinario WHERE username = ? AND password = SHA2(?, 256)";
 
         try (Connection connection = DBConnection.getInstance().getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {

@@ -6,6 +6,7 @@ package veterinaria.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +20,7 @@ import veterinaria.businesslogic.dto.ConsultarCitaDTO;
 public class GUIConsultarCitas extends javax.swing.JFrame {
 
     private static final Logger logger = LogManager.getLogger();
+    private List<ConsultarCitaDTO> citasTabla;
     /**
      * Creates new form GUIConsultarCitas
      */
@@ -48,6 +50,7 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
         botonBuscarFecha = new javax.swing.JButton();
         botonBuscarMes = new javax.swing.JButton();
         botonRecargar = new javax.swing.JButton();
+        botonAtender = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,6 +116,13 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
             }
         });
 
+        botonAtender.setText("Atender");
+        botonAtender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAtenderActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -124,7 +134,10 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(36, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(botonCerrar)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(botonAtender)
+                        .addGap(18, 18, 18)
+                        .addComponent(botonCerrar))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createSequentialGroup()
@@ -168,7 +181,9 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(botonCerrar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonCerrar)
+                    .addComponent(botonAtender))
                 .addGap(28, 28, 28))
         );
 
@@ -181,12 +196,12 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
     }//GEN-LAST:event_botonCerrarActionPerformed
 
     private void cargarTabla() {
-        List<ConsultarCitaDTO> consultas = new CitaDAO().obtenerCitasFiltradas();
+        citasTabla = new CitaDAO().obtenerCitasFiltradas();
         String[] columnas = { "Veterinario", "Mascota", "Dueño", "Motivo", "Tratamiento", "Fecha" };
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
         try {
-            for (ConsultarCitaDTO i : consultas) {
+            for (ConsultarCitaDTO i : citasTabla) {
                 Object[] fila = new Object[6];
                 fila[0] = i.getNombreVeterinario();
                 fila[1] = i.getNombreMascota();
@@ -208,10 +223,10 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
 
     private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
         String nombreVet = textBusquedaVet.getText().trim();
-        List<ConsultarCitaDTO> consultas = new CitaDAO().obtenerCitasFiltradas();
+        citasTabla = new CitaDAO().obtenerCitasFiltradas();
         List<ConsultarCitaDTO> consultasBuscadas = new ArrayList<>();
         
-        for (ConsultarCitaDTO i : consultas) {
+        for (ConsultarCitaDTO i : citasTabla) {
             if (i.getNombreVeterinario().toLowerCase().contains(nombreVet.toLowerCase())) {
                 consultasBuscadas.add(i);
             }
@@ -249,10 +264,10 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
 
         String fecha = ano + "-" + mes + "-" + dia;
         
-        List<ConsultarCitaDTO> consultas = new CitaDAO().obtenerCitasFiltradas();
+        citasTabla = new CitaDAO().obtenerCitasFiltradas();
         List<ConsultarCitaDTO> consultasBuscadas = new ArrayList<>();
         
-        for (ConsultarCitaDTO i : consultas) {
+        for (ConsultarCitaDTO i : citasTabla) {
             if (i.getFecha().toString().toLowerCase().contains(fecha)) {
                 consultasBuscadas.add(i);
             }
@@ -314,6 +329,21 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
         cargarTabla();
     }//GEN-LAST:event_botonRecargarActionPerformed
 
+    private void botonAtenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAtenderActionPerformed
+        int filaSeleccionada = tablaConsultas.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            ConsultarCitaDTO cita = citasTabla.get(filaSeleccionada);
+            String estado = cita.getEstadoCita();
+            if (!estado.equals("Concluida")) {
+                GUIAtenderCita controlador = new GUIAtenderCita(cita.getIdCita());
+                controlador.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Esa cita ya fue concluida");
+            }
+            
+        }
+    }//GEN-LAST:event_botonAtenderActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -350,6 +380,7 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonAtender;
     private javax.swing.JButton botonBuscar;
     private javax.swing.JButton botonBuscarFecha;
     private javax.swing.JButton botonBuscarMes;

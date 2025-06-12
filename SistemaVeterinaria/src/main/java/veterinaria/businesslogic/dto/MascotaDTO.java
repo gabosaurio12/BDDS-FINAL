@@ -8,6 +8,7 @@ public class MascotaDTO {
     private Date fechaDeNacimiento;
     private String color;
     private Double peso;
+    private String especie;
     private int idDuenio;
 
     public MascotaDTO() {}
@@ -68,6 +69,16 @@ public class MascotaDTO {
     public void setIdDuenio(int idDuenio) {
         this.idDuenio = idDuenio;
     }
+
+    public String getEspecie() {
+        return especie;
+    }
+
+    public void setEspecie(String especie) {
+        this.especie = especie;
+    }
+    
+    
 
     @Override
     public String toString() {

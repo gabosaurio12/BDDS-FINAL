@@ -160,11 +160,11 @@ public class CitaDAO {
                 "m.nombre AS nombreMascota, " +
                 "d.nombreCompleto AS nombreDueno, " +
                 "c.motivoDeConsulta, " +
-                "c.idCita" +
+                "c.idCita, " +
                 "c.tratamiento, " +
                 "c.estadoDeCita, " +
                 "f.fecha, " +
-                "h.hora, " +
+                "h.hora " +
                 "FROM Cita c " +
                 "JOIN Mascota m ON c.idMascota = m.idMascota " +
                 "JOIN Dueno d ON m.idDuenio = d.idDuenio " +
@@ -197,5 +197,80 @@ public class CitaDAO {
         }
         
         return null;
+    }
+    
+    public ConsultarCitaDTO obtenerCitaFiltradaPorId(int id) {
+        String query = "SELECT " +
+                "v.nombreCompleto AS nombreVeterinario, " +
+                "m.nombre AS nombreMascota, " +
+                "d.nombreCompleto AS nombreDueno, " +
+                "c.motivoDeConsulta, " +
+                "c.idCita, " +
+                "c.tratamiento, " +
+                "c.estadoDeCita, " +
+                "f.fecha, " +
+                "h.hora " +
+                "FROM Cita c " +
+                "JOIN Mascota m ON c.idMascota = m.idMascota " +
+                "JOIN Dueno d ON m.idDuenio = d.idDuenio " +
+                "JOIN Veterinario v ON c.idAgenda = v.agendaID " +
+                "JOIN FechaHora fh ON c.idFechaHora = fh.idFechaHora " +
+                "JOIN Fecha f ON fh.idFecha = f.idFecha " +
+                "JOIN Hora h ON fh.idHora = h.idHora " +
+                "WHERE c.idCita = ?";
+        ConsultarCitaDTO cita = null;
+        try (Connection connection = DBConnection.getInstance().getConnection();
+                PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                cita = new ConsultarCitaDTO();
+                cita.setEstadoCita("estadoDeCita");
+                cita.setFecha(result.getDate("fecha"));
+                cita.setIdCita(result.getInt("idCita"));
+                cita.setMotivoConsulta(result.getString("motivoDeConsulta"));
+                cita.setTratamiento("tratamiento");
+                cita.setNombreDueno(result.getString("nombreDueno"));
+                cita.setNombreMascota(result.getString("nombreMascota"));
+                cita.setNombreVeterinario(result.getString("nombreVeterianario"));
+            }            
+        } catch (SQLException e) {
+            logger.error("Error al recuperar cita filtrada por id: ", e);
+        }
+        
+        return cita;
+    }
+    
+    public int concluirCita(CitaDTO cita) {
+        String query = "UPDATE Cita "
+                + "SET motivoDeConsulta = ?, tratamiento = ?, estadoDeCita = ? "
+                + "WHERE idCita = ?";
+        int filasAfectadas = 0;
+        try (Connection connection = DBConnection.getInstance().getConnection();
+                PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, cita.getMotivoDeConsulta());
+            statement.setString(2, cita.getTratamiento());
+            statement.setString(3, "Concluida");
+            statement.setInt(4, cita.getIdCita());
+            filasAfectadas = statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Error al concluir cita: ", e);
+        }
+        return filasAfectadas;
+    } 
+    
+    public int insertarCitaEnfermedad(int idCita, int idEnfermedad) {
+        String query = "INSERT INTO cita_enfermedad (idCita, idEnfermedad) "
+                + "VALUES (?, ?)";
+        int filasAfectadas = 0;
+        try (Connection connection = DBConnection.getInstance().getConnection();
+                PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, idCita);
+            statement.setInt(2, idEnfermedad);
+            filasAfectadas = statement.executeUpdate();
+        } catch (SQLException ex) {
+            logger.error("Error al insertar en cita enfermedad: ", ex);
+        }
+        return filasAfectadas;
     }
 }
