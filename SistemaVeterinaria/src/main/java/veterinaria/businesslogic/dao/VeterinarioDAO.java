@@ -45,7 +45,7 @@ public class VeterinarioDAO {
     public boolean insertarVeterinario(VeterinarioDTO veterinario) {
         String nombreUsuarioGenerado = generarNombreDeUsuario();
         String sqlAgenda = "INSERT INTO Agenda () VALUES ()";
-        String sqlInsert = "INSERT INTO veterinario (cedula, nombreCompleto, telefono, nombreDeUsuario, agendaID) VALUES (?, ?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO veterinario (cedula, nombreCompleto, telefono, nombreDeUsuario, contrasenia, agendaID) VALUES (?, ?, ?, ?, SHA2(?, 256), ?)";
 
         try (Connection connection = DBConnection.getInstance().getConnection();
              PreparedStatement pstmtAgenda = connection.prepareStatement(sqlAgenda, Statement.RETURN_GENERATED_KEYS)) {
@@ -65,7 +65,8 @@ public class VeterinarioDAO {
                 pstmtInsert.setString(2, veterinario.getNombreCompleto());
                 pstmtInsert.setString(3, veterinario.getTelefono());
                 pstmtInsert.setString(4, nombreUsuarioGenerado);
-                pstmtInsert.setInt(5, agendaId);
+                pstmtInsert.setString(5, veterinario.getContrasenia());
+                pstmtInsert.setInt(6, agendaId);
 
                 int filasAfectadas = pstmtInsert.executeUpdate();
 
@@ -154,5 +155,30 @@ public class VeterinarioDAO {
             logger.error("Error al eliminar veterinario: ", e);
             return false;
         }
+    }
+    public VeterinarioDTO verificarLogin(String nombreDeUsuario, String contrasenia) {
+        String sql = "SELECT cedula, nombreCompleto, telefono, nombreDeUsuario, agendaID FROM veterinario WHERE nombreDeUsuario = ? AND contrasenia = SHA2(?, 256)";
+
+        try (Connection connection = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+            pstmt.setString(1, nombreDeUsuario);
+            pstmt.setString(2, contrasenia); 
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return new VeterinarioDTO(
+                        rs.getInt("cedula"),
+                        rs.getString("nombreCompleto"),
+                        rs.getString("telefono"),
+                        rs.getString("nombreDeUsuario"),
+                        rs.getInt("agendaID")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Error al verificar login del veterinario: ", e);
+        }
+        return null; // Login fallido
     }
 }

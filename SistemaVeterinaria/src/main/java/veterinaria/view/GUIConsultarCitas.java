@@ -266,37 +266,37 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
     }//GEN-LAST:event_botonBuscarFechaActionPerformed
 
     private void botonBuscarMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarMesActionPerformed
-        int mesInt = (Integer) spinnerMes.getValue();
-        
-        String mes = mesInt < 10 ? "0" + mesInt : String.valueOf(mesInt);
-        
-        List<ConsultarCitaDTO> consultas = new CitaDAO().obtenerCitasFiltradas();
-        List<ConsultarCitaDTO> consultasBuscadas = new ArrayList<>();
-        
-        for (ConsultarCitaDTO i : consultas) {
-            if (i.getFecha().toString().toLowerCase().contains(.toLowerCase())) {
-                consultasBuscadas.add(i);
-            }
-        }
-        String[] columnas = { "Veterinario", "Mascota", "Dueño", "Motivo", "Tratamiento", "Fecha" };
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
-
-        try {
-            for (ConsultarCitaDTO i : consultasBuscadas) {
-                Object[] fila = new Object[6];
-                fila[0] = i.getNombreVeterinario();
-                fila[1] = i.getNombreMascota();
-                fila[2] = i.getNombreDueno();
-                fila[3] = i.getMotivoConsulta();
-                fila[4] = i.getTratamiento();
-                fila[5] = i.getFecha();
-                modelo.addRow(fila);
-            }
-        } catch (Exception e) {
-            logger.error("Error al cargar tabla", e);
-        }
-        
-        tablaConsultas.setModel(modelo);
+//        int mesInt = (Integer) spinnerMes.getValue();
+//        
+//        String mes = mesInt < 10 ? "0" + mesInt : String.valueOf(mesInt);
+//        
+//        List<ConsultarCitaDTO> consultas = new CitaDAO().obtenerCitasFiltradas();
+//        List<ConsultarCitaDTO> consultasBuscadas = new ArrayList<>();
+//        
+//        for (ConsultarCitaDTO i : consultas) {
+//            if (i.getFecha().toString().toLowerCase().contains(.toLowerCase())), {
+//                consultasBuscadas.add(i);
+//            }
+//        }
+//        String[] columnas = { "Veterinario", "Mascota", "Dueño", "Motivo", "Tratamiento", "Fecha" };
+//        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
+//
+//        try {
+//            for (ConsultarCitaDTO i : consultasBuscadas) {
+//                Object[] fila = new Object[6];
+//                fila[0] = i.getNombreVeterinario();
+//                fila[1] = i.getNombreMascota();
+//                fila[2] = i.getNombreDueno();
+//                fila[3] = i.getMotivoConsulta();
+//                fila[4] = i.getTratamiento();
+//                fila[5] = i.getFecha();
+//                modelo.addRow(fila);
+//            }
+//        } catch (Exception e) {
+//            logger.error("Error al cargar tabla", e);
+//        }
+//        
+//        tablaConsultas.setModel(modelo);
     }//GEN-LAST:event_botonBuscarMesActionPerformed
 
     /**

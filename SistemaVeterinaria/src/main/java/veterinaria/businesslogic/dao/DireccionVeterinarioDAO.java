@@ -17,7 +17,7 @@ public class DireccionVeterinarioDAO {
     private final Logger logger = LogManager.getLogger(DireccionVeterinarioDAO.class);
 
     public boolean insertarDireccionVeterinario(DireccionVeterinarioDTO direccionVeterinario) throws SQLException {
-        String sql = "INSERT INTO direccion_veterinario (calle, colonia, numero, cedula) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO direccion_veterinario (calle, colonia, numeroDeCasa, cedula) VALUES (?, ?, ?, ?)";
         try (Connection connection = DBConnection.getInstance().getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -54,7 +54,7 @@ public class DireccionVeterinarioDAO {
                 if (rs.next()) {
                     return new DireccionVeterinarioDTO(
                             rs.getInt("idCasa"),
-                            rs.getString("numero"),
+                            rs.getString("numeroDeCasa"),
                             rs.getString("calle"),
                             rs.getString("colonia"),
                             (Integer) rs.getObject("cedula")
@@ -76,7 +76,7 @@ public class DireccionVeterinarioDAO {
             while (rs.next()) {
                 listaDirecciones.add(new DireccionVeterinarioDTO(
                         rs.getInt("idCasa"),
-                        rs.getString("numero"),        
+                        rs.getString("numeroDeCasa"),        
                         rs.getString("calle"),
                         rs.getString("colonia"),
                         (Integer) rs.getObject("cedula")
@@ -119,7 +119,7 @@ public class DireccionVeterinarioDAO {
                 while (rs.next()) {
                     lista.add(new DireccionVeterinarioDTO(
                         rs.getInt("idCasa"),
-                        rs.getString("numero"),
+                        rs.getString("numeroDeCasa"),
                         rs.getString("calle"),
                         rs.getString("colonia"),
                         (Integer) rs.getObject("cedula")
