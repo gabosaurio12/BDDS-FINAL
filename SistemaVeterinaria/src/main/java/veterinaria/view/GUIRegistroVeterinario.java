@@ -25,10 +25,11 @@ public class GUIRegistroVeterinario extends javax.swing.JFrame {
         initComponents();
     }
     
-    public GUIRegistroVeterinario(int cedula) {
+    public GUIRegistroVeterinario(int cedula, String nombreDeUsuarioOriginal) {
         initComponents();
         this.modoEdicion = true;
         this.cedulaOriginal = cedula;
+        this.nombreDeUsuarioOriginal = nombreDeUsuarioOriginal;
         configurarVentana();
         cargarDatosVeterinario(cedula);
     }
