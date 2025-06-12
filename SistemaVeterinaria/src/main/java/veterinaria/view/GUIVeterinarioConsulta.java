@@ -47,13 +47,13 @@ public class GUIVeterinarioConsulta extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        textSintomas = new javax.swing.JTextArea();
         labelMascota = new javax.swing.JLabel();
         labelDueno = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        labelMascota1 = new javax.swing.JLabel();
+        labelVeterinario = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        textTratamiento = new javax.swing.JTextArea();
         jLabel6 = new javax.swing.JLabel();
         comboEnfermedades = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
@@ -71,9 +71,9 @@ public class GUIVeterinarioConsulta extends javax.swing.JFrame {
 
         jLabel4.setText("Síntomas");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        textSintomas.setColumns(20);
+        textSintomas.setRows(5);
+        jScrollPane1.setViewportView(textSintomas);
 
         labelMascota.setText("NombreMascota");
 
@@ -81,11 +81,11 @@ public class GUIVeterinarioConsulta extends javax.swing.JFrame {
 
         jLabel5.setText("Veterinario");
 
-        labelMascota1.setText("NombreVeterinario");
+        labelVeterinario.setText("NombreVeterinario");
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        textTratamiento.setColumns(20);
+        textTratamiento.setRows(5);
+        jScrollPane2.setViewportView(textTratamiento);
 
         jLabel6.setText("Tratamiento");
 
@@ -120,7 +120,7 @@ public class GUIVeterinarioConsulta extends javax.swing.JFrame {
                             .addComponent(jLabel7))
                         .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(labelMascota1)
+                            .addComponent(labelVeterinario)
                             .addComponent(labelDueno)
                             .addComponent(jScrollPane1)
                             .addComponent(labelMascota)
@@ -142,7 +142,7 @@ public class GUIVeterinarioConsulta extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(labelMascota1))
+                    .addComponent(labelVeterinario))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -180,7 +180,10 @@ public class GUIVeterinarioConsulta extends javax.swing.JFrame {
     }//GEN-LAST:event_botonCancelarActionPerformed
 
     public void setLabels() {
-        labelDueno.setText();
+        labelDueno.setText(citaFiltrada.getNombreDueno());
+        labelMascota.setText(citaFiltrada.getNombreMascota());
+        labelVeterinario.setText(citaFiltrada.getNombreVeterinario());
+        textSintomas.setText(citaFiltrada.getMotivoConsulta());
     }
     
     public void setComboEnfermedades() {
@@ -239,10 +242,10 @@ public class GUIVeterinarioConsulta extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JLabel labelDueno;
     private javax.swing.JLabel labelMascota;
-    private javax.swing.JLabel labelMascota1;
+    private javax.swing.JLabel labelVeterinario;
+    private javax.swing.JTextArea textSintomas;
+    private javax.swing.JTextArea textTratamiento;
     // End of variables declaration//GEN-END:variables
 }

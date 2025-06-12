@@ -16,13 +16,13 @@ import veterinaria.businesslogic.dto.ConsultarCitaDTO;
  *
  * @author gabosaurio
  */
-public class GUIConsultarCitas extends javax.swing.JFrame {
+public class GUIConsultarCitasVeterinario extends javax.swing.JFrame {
 
     private static final Logger logger = LogManager.getLogger();
     /**
      * Creates new form GUIConsultarCitas
      */
-    public GUIConsultarCitas() {
+    public GUIConsultarCitasVeterinario() {
         initComponents();
         cargarTabla();
     }
@@ -331,20 +331,21 @@ public class GUIConsultarCitas extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIConsultarCitas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIConsultarCitasVeterinario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIConsultarCitas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIConsultarCitasVeterinario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIConsultarCitas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIConsultarCitasVeterinario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIConsultarCitas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIConsultarCitasVeterinario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIConsultarCitas().setVisible(true);
+                new GUIConsultarCitasVeterinario().setVisible(true);
             }
         });
     }
